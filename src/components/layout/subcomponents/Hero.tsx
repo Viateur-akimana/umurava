@@ -1,15 +1,27 @@
+import Image from 'next/image'
 import React from 'react'
 
 const Hero = () => {
   return (
-    <div className="flex items-center justify-between p-8 ">
-      <div className="max-w-md">
-        <h1 className="text-4xl font-bold text-blue-800">Build Work Experience through Skills Challenges Program</h1>
-        <p className="mt-4 text-lg text-gray-700">Enhance your Employability and Accelerate your Career Growth by working on Hands-on projects & hackathons from various businesses & organizations.</p>
-        <button className="mt-6 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Get Started</button>
+    <div className="relative flex flex-col md:flex-row items-center justify-between px-6 md:px-12 py-12 md:py-14">
+      <div className="z-10 max-w-lg text-center md:text-left">
+        <h1 className="text-3xl md:text-5xl font-bold text-blue-800 leading-tight">
+          Build Work Experience through Skills Challenges Program
+        </h1>
+        <p className="mt-4 text-lg text-gray-700">
+          Enhance your employability and accelerate your career growth by working on hands-on projects & hackathons from various businesses & organizations.
+        </p>
+        <button className="mt-6 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300">
+          Get Started
+        </button>
       </div>
-      <div className="flex-shrink-0">
-        {/* image content here */}
+      <div className="w-full md:w-1/2">
+        <Image
+          src="/images/hero.png"
+          alt="hero image"
+          width={700}
+          height={100}
+        />
       </div>
     </div>
   )
