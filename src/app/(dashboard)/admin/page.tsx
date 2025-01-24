@@ -1,11 +1,8 @@
-import React from 'react'
-
-const page = () => {
+import Dashboard from "./dashboard/page"
+export default function Home() {
   return (
     <div>
-      <h1>Admin home page</h1>
+      <h1><Dashboard/></h1>
     </div>
-  )
+  );
 }
-
-export default page
