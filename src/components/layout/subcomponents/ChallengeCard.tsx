@@ -1,12 +1,21 @@
+'use client'
 import { Challenge } from "@/types/challenge";
 import Image from "next/image"
+import { useRouter } from "next/navigation";
 
 interface ChallengeCardProps {
     challenge: Challenge;
   }
   
- export const ChallengeCard: React.FC<ChallengeCardProps> = ({ challenge }) => (
-    <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+ export const ChallengeCard: React.FC<ChallengeCardProps> = ({ challenge }) => {
+  const router = useRouter(); 
+
+  const handleChallengeClick = (id: number) => {
+    router.push(`/talent/challenges/${id}`);
+  };
+
+   return( 
+   <div className="bg-white rounded-lg shadow-sm overflow-hidden">
       <div className="relative">
         <div className="bg-[#2B71F0] h-40 flex items-center m-5 justify-center rounded-md ">
           <Image
@@ -49,9 +58,11 @@ interface ChallengeCardProps {
           </p>
         </div>
      <hr className="text-[#E4E7EC] font-bold"/>
-        <button className="w-1/2 bg-[#2B71F0] text-white py-2 rounded-lg hover:bg-blue-600 transition font-sans">
+        <button onClick={() => handleChallengeClick(challenge.id)} className="w-1/2 bg-[#2B71F0] text-white py-2 rounded-lg hover:bg-blue-600 transition font-sans">
           View Challenge
         </button>
       </div>
     </div>
+   
   );
+}

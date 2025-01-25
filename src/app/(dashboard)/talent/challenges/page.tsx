@@ -1,34 +1,42 @@
+'use client'
 import { Challenge } from "@/types/challenge";
 import React from "react";
 import { ChallengeCard } from "@/components/layout/subcomponents/ChallengeCard";
 import { FileText } from "lucide-react";
 
+
 interface Item {
   label: string;
   count: number;
+  isActive?: boolean; 
 }
 
 const items: Item[] = [
   {
     label: "All challenges",
-    count: 0,
+    count: 6, 
+    isActive: true, 
   },
   {
     label: "Completed challenges",
-    count: 0,
+    count: 2,
   },
   {
     label: "Open challenges",
-    count: 0,
+    count: 3,
   },
   {
     label: "Ongoing challenges",
-    count: 0,
+    count: 1,
   },
 ];
+const handleItemClick = (label: string) => {
+  items.forEach((item) => (item.isActive = item.label === label));
+};
 const ChallengePage = () => {
   const challenges: Challenge[] = [
-    {
+    { 
+      id:1,
       title: "Design a Dashboard for SokoFund, Fintech Product",
       description: "Create a functional dashboard for a fintech product.",
       status: "Open",
@@ -38,6 +46,7 @@ const ChallengePage = () => {
       companyLogo: "/umurva.png",
     },
     {
+      id:2,
       title: "Design a Dashboard for SokoFund for a Fintech Product",
       description: "Build an app to track user health metrics.",
       status: "Open",
@@ -47,6 +56,7 @@ const ChallengePage = () => {
       companyLogo: "/umurva.png",
     },
     {
+      id:3,
       title: "Design a Dashboard for SokoFund for a Fintech Product",
       description: "Build an app to track user health metrics.",
       status: "Open",
@@ -56,6 +66,7 @@ const ChallengePage = () => {
       companyLogo: "/umurva.png",
     },
     {
+      id:4,
       title: "Design a Dashboard for SokoFund, Fintech Product",
       description: "Create a functional dashboard for a fintech product.",
       status: "Open",
@@ -65,6 +76,7 @@ const ChallengePage = () => {
       companyLogo: "/umurva.png",
     },
     {
+      id:5,
       title: "Design a Dashboard for SokoFund for a Fintech Product",
       description: "Build an app to track user health metrics.",
       status: "Open",
@@ -74,6 +86,7 @@ const ChallengePage = () => {
       companyLogo: "/umurva.png",
     },
     {
+      id:6,
       title: "Design a Dashboard for SokoFund for a Fintech Product",
       description: "Build an app to track user health metrics.",
       status: "Open",
@@ -94,17 +107,25 @@ const ChallengePage = () => {
             </p>
           </div>
         </div>
-        <div className="mb-8 flex flex-row justify-between items-center ">
+        <div className="mb-8 flex flex-row justify-between items-center">
           <div className="flex gap-3">
-            {" "}
             {items.map((item) => (
               <div
                 key={item.label}
-                className="flex items-center gap-3 px-2 border border-[#D0D5DD] bg-[#F0F2F5] text-[#344054] py-3 rounded-lg hover:bg-white/10 transition-colors"
+                onClick={() => handleItemClick(item.label)} 
+                className={`flex items-center gap-3 px-2 border ${
+                  item.isActive
+                    ? "border-[#2B71F0] bg-[#D0E0FC]"
+                    : "border-[#D0D5DD] bg-[#F0F2F5] hover:bg-white/10"
+                } text-[#344054] py-3 rounded-lg transition-colors cursor-pointer`}
               >
-                <FileText className="h-4 w-4 text-[#98A2B3]" />
-                <span className="text-sm font-medium text-[#344054]">{item.label}</span>
-                <span>{item.count}</span>
+                <FileText className={`h-4 w-4 ${item.isActive ? "text-[#2B71F0]" : "text-[#98A2B3]"}`} />
+                <span className="text-sm font-medium text-[#344054]">
+                  {item.label}
+                </span>
+                <div className={`h-6 w-7  rounded-full flex items-center justify-center ${item.isActive ? "bg-[#2B71F0] text-white " : "bg-[#E4E7EC] text-[#344054]"}`}>
+                  <span>{item.count}</span>
+                </div>
               </div>
             ))}
           </div>
