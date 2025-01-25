@@ -17,7 +17,7 @@ const Hero = () => {
       </div>
       <div className="w-full md:w-1/2">
         <Image
-          src="/images/hero.png"
+          src="/hero.png"
           alt="hero image"
           width={700}
           height={100}

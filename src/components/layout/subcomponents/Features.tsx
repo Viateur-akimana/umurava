@@ -12,7 +12,7 @@ const Features = () => {
       </p>
       <div className="flex flex-col gap-5">
         <div>
-          <div className="bg-primary text-white p-10 rounded-lg">
+          <div className="bg-blue-600 text-white p-10 rounded-lg">
             <div className='bg-white p-3 rounded mb-2 w-10'>
               <FaBriefcase color='#2B71F0' />
             </div>
@@ -25,7 +25,7 @@ const Features = () => {
           </div>
         </div>
         <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-5">
-          <div className="bg-primary text-white p-8 rounded-lg">
+          <div className="bg-blue-600 text-white p-8 rounded-lg">
             <div className='bg-white p-3 rounded mb-2 w-10'>
               <FaBriefcase color='#2B71F0' />
             </div>
@@ -36,7 +36,7 @@ const Features = () => {
               Develop the in-demand skills and build a strong portfolio to increase your chances of landing your dream job or contract.
             </p>
           </div>
-          <div className="bg-primary text-white p-8 rounded-lg">
+          <div className="bg-blue-600 text-white p-8 rounded-lg">
             <div className='bg-white p-3 rounded mb-2 w-10'>
               <FaBriefcase color='#2B71F0' />
             </div>

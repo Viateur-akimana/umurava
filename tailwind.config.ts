@@ -10,10 +10,6 @@ export default {
     extend: {
       fontFamily: {
         sans: ['var(--font-work-sans)', 'system-ui', 'sans-serif'],
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-        primary: '#2B71F0',
       },
     },
   },
