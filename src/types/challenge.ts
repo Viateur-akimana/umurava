@@ -1,4 +1,5 @@
 export interface Challenge {
+    id:number;
     title: string;
     description: string;
     status: "Open" | "Closed";
