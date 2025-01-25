@@ -1,5 +1,6 @@
 import type { Config } from "tailwindcss";
 
+
 export default {
   content: [
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -7,6 +8,8 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['var(--font-work-sans)', 'system-ui', 'sans-serif'],
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
