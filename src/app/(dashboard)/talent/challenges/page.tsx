@@ -115,7 +115,7 @@ const ChallengePage = () => {
                 onClick={() => handleItemClick(item.label)} 
                 className={`flex items-center gap-3 px-2 border ${
                   item.isActive
-                    ? "border-[#2B71F0] bg-[#D0E0FC]"
+                    ? "border-[#FCD2C2] bg-[#D0E0FC]"
                     : "border-[#D0D5DD] bg-[#F0F2F5] hover:bg-white/10"
                 } text-[#344054] py-3 rounded-lg transition-colors cursor-pointer`}
               >
@@ -128,6 +128,7 @@ const ChallengePage = () => {
                 </div>
               </div>
             ))}
+
           </div>
         </div>
         <hr className="text-[#E4E7EC] font-bold"/>

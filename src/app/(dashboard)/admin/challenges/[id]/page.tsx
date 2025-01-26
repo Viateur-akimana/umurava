@@ -1,128 +1,61 @@
 "use client";
+import React from "react";
+import ChallengeDetailsCard from "@/components/layout/subcomponents/ChallengeDetailsCard";
+import { FaArrowLeft } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
-import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
-
-type Challenge = {
-  id: string;
-  title: string;
-  description: string;
-  status: string;
-};
-
-const AdminChallengeView = () => {
-  const [challenge, setChallenge] = useState<Challenge | null>(null);
-  const [editMode, setEditMode] = useState(false);
-  const [updatedChallenge, setUpdatedChallenge] = useState<Challenge>({
-    id: "",
-    title: "",
-    description: "",
-    status: "active",
-  });
-  const searchParams = useSearchParams();
-  const id = searchParams.get("id"); 
-
-  useEffect(() => {
-    if (id) {
-      fetch(`/api/challenges/${id}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setChallenge(data);
-          setUpdatedChallenge(data);
-        });
-    }
-  }, [id]);
-
-  const handleUpdate = async () => {
-    if (!id) return;
-
-    const response = await fetch(`/api/challenges/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updatedChallenge),
-    });
-
-    if (response.ok) {
-      const updatedData = await response.json();
-      setChallenge(updatedData);
-      setEditMode(false);
-    }
-  };
-
-  if (!challenge) {
-    return <div>Loading...</div>;
-  }
+const ChallengeDetailsPage: React.FC = () => {
+  const router = useRouter();
+  const projectBrief =
+    "A Fintech company that is developing a Digital Financial Platform designed for businesses and their workforce in Africa. Is partnering with Umurava to launch a Payroll and HR Management System to Employers and Embedded Financial Services and products to Employees and Gig Workers across Africa.";
+  const productRequirements = [
+    "UX research to understand Project Requirements",
+    "Understanding User Needs",
+    "Understanding Business Goals",
+    "Determine interaction between users",
+    "Requirements Catalog",
+  ];
+  const productDesigns = [
+    "User Interface Design for each step",
+    "Creating wireframes to outline the basic structure and layout of the web and mobile app.",
+    "Designing visually appealing and user-friendly interfaces for the web and mobile apps focusing on usability and user experience.",
+    "Ensuring the web application works seamlessly across web, mobile, and tablet devices.",
+    "Provide a feedback session for in-development guidance",
+  ];
+  const deliverables = [
+    "Requirements Catalog and User Interaction Diagram",
+    "User Interface Mockups",
+    "Payroll and HR System Design (Completed)",
+  ];
 
   return (
-    <div className="p-6">
-      {editMode ? (
-        <div>
-          <h1 className="text-2xl font-bold">Edit Challenge</h1>
-          <input
-            className="border p-2 w-full mt-4"
-            value={updatedChallenge.title}
-            onChange={(e) =>
-              setUpdatedChallenge({ ...updatedChallenge, title: e.target.value })
-            }
-          />
-          <textarea
-            className="border p-2 w-full mt-4"
-            value={updatedChallenge.description}
-            onChange={(e) =>
-              setUpdatedChallenge({
-                ...updatedChallenge,
-                description: e.target.value,
-              })
-            }
-          />
-          <select
-            className="border p-2 w-full mt-4"
-            value={updatedChallenge.status}
-            onChange={(e) =>
-              setUpdatedChallenge({ ...updatedChallenge, status: e.target.value })
-            }
-          >
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
-          </select>
-          <div className="mt-4">
-            <button
-              className="px-4 py-2 bg-blue-500 text-white rounded mr-2"
-              onClick={handleUpdate}
-            >
-              Save Changes
-            </button>
-            <button
-              className="px-4 py-2 bg-gray-500 text-white rounded"
-              onClick={() => setEditMode(false)}
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      ) : (
-        <div>
-          <h1 className="text-2xl font-bold">{challenge.title}</h1>
-          <p className="mt-4">{challenge.description}</p>
-          <span
-            className={`inline-block mt-2 ${
-              challenge.status === "active" ? "text-green-500" : "text-red-500"
-            }`}
-          >
-            {challenge.status}
-          </span>
-          <div className="mt-4">
-            <button
-              className="px-4 py-2 bg-yellow-500 text-white rounded"
-              onClick={() => setEditMode(true)}
-            >
-              Edit
-            </button>
-          </div>
-        </div>
-      )}
+    <div>
+      <div className="flex items-center bg-white border h-16 pl-5 border-x-[#E4E7EC] space-x-3 text-md text-gray-600">
+        <button
+          onClick={() => router.back()}
+          className="flex items-center space-x-1 pl-6  hover:underline"
+        >
+          <FaArrowLeft className="text-2xl text-black border border-[#E4E7EC] p-1"/>
+        </button>
+        <span className="text-[#667185]">Go Back</span>
+        <span className="text-gray-400">/</span>
+        <span className="text-[#98A2B3]">Challenges & Hackathons</span>
+        <span className="text-gray-400">/</span>
+        <span className="text-[#2B71F0] hover:underline cursor-pointer">
+          Design a Dashboard for Sokofund
+        </span>
+      </div>
+
+      <div className="flex mx-auto top-4 right-4">
+        <ChallengeDetailsCard
+          projectBrief={projectBrief}
+          productRequirements={productRequirements}
+          productDesigns={productDesigns}
+          deliverables={deliverables}
+        />
+      </div>
     </div>
   );
 };
 
-export default AdminChallengeView;
+export default ChallengeDetailsPage;
