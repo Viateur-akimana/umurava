@@ -1,8 +1,13 @@
+import Accelerate from '@/components/layout/subcomponents/accelerate'
+import Offerings from '@/components/layout/subcomponents/offerings'
 import React from 'react'
 
 const Education = () => {
   return (
-    <div>Education</div>
+    <div>
+      <Accelerate />
+      <Offerings />
+    </div>
   )
 }
 
