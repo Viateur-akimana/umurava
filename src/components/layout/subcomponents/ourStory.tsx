@@ -11,7 +11,7 @@ const OurStory = () => {
           Driven by our mission to place skilled and professional digital talent, we created Skills Challenges as a project-based learning solution  for talents to gain real-world experience, solve problems, and build portfolios so that they become ready for global job markets.
         </p>
       </div>
-      <div className="w-full mt-3 md:mt-0 md:w-1/2 flex justify-center">
+      <div className="w-full mt-5 md:mt-0 md:w-1/2 flex justify-center">
         <Image
           src="/video.png"
           alt="hero image"
