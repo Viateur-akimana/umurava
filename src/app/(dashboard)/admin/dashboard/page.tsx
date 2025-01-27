@@ -1,14 +1,15 @@
 import React from "react";
-import { FaEye } from "react-icons/fa";
 import Image from "next/image";
 import { Challenge } from "@/types/challenge";
-import { StatisticsCard } from "@/components/layout/subcomponents/StatisticsCard";
+import { AdminStatsCard } from "@/components/layout/subcomponents/AdminStatsCard";
+
 
 
 
 const Dashboard: React.FC = () => {
   const challenges: Challenge[] = [
     {
+      id:1,
       title: "Design a Dashboard for SokoFund, Fintech Product",
       description: "Create a functional dashboard for a fintech product.",
       status: "Open",
@@ -18,6 +19,7 @@ const Dashboard: React.FC = () => {
       companyLogo: "/umurva.png",
     },
     {
+      id:2,
       title: "Design a Dashboard for SokoFund for a Fintech Product",
       description: "Build an app to track user health metrics.",
       status: "Open",
@@ -27,6 +29,7 @@ const Dashboard: React.FC = () => {
       companyLogo: "/umurva.png",
     },
     {
+      id:3,
       title: "Design a Dashboard for SokoFund for a Fintech Product",
       description: "Build an app to track user health metrics.",
       status: "Open",
@@ -38,8 +41,8 @@ const Dashboard: React.FC = () => {
   ];
 
   return (
-    <div className="flex h-screen">
-      <div className="flex-1 overflow-y-auto ml-[260px]">
+    <div className="flex h-screen mb-10">
+      <div className="flex-1 overflow-y-auto m-10 px-6">
         <div className="flex-1 pt-6">
         
           <div className="flex justify-between items-center mb-8">
@@ -49,18 +52,18 @@ const Dashboard: React.FC = () => {
                 Build Work Experience through Skills Challenges
               </p>
             </div>
-            <button className="flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded-lg">
-              <FaEye />
-              View Profile
-            </button>
+          </div>
+          <div className="grid grid-cols-2 gap-6 mb-8">
+            <AdminStatsCard title="Completed Challenges" count={4} rate={75} />
+            <AdminStatsCard title="Open Challenges" count={200} rate={20} />
           </div>
           <div className="grid grid-cols-3 gap-6 mb-8">
-            <StatisticsCard title="Completed Challenges" count="05" />
-            <StatisticsCard title="Open Challenges" count="200" />
-            <StatisticsCard title="Ongoing Challenges" count="200" />
+            <AdminStatsCard title="Completed Challenges" count={4} rate={75} />
+            <AdminStatsCard title="Open Challenges" count={200} rate={20} />
+            <AdminStatsCard title="Ongoing Challenges" count={15} rate={10} />
           </div>
           <div className="mb-6 flex justify-between items-center">
-            <h2 className="text-xl font-bold">Recent Challenges</h2>
+            <h2 className="text-xl text-[#101928] font-semibold">Recent Challenges</h2>
             <button className="text-blue-500">See all →</button>
           </div>
 

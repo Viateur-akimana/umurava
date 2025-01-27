@@ -9,6 +9,7 @@ import { StatisticsCard } from "@/components/layout/subcomponents/StatisticsCard
 const Dashboard: React.FC = () => {
   const challenges: Challenge[] = [
     {
+      id:1,
       title: "Design a Dashboard for SokoFund, Fintech Product",
       description: "Create a functional dashboard for a fintech product.",
       status: "Open",
@@ -18,6 +19,7 @@ const Dashboard: React.FC = () => {
       companyLogo: "/umurva.png",
     },
     {
+      id:2,
       title: "Design a Dashboard for SokoFund for a Fintech Product",
       description: "Build an app to track user health metrics.",
       status: "Open",
@@ -27,6 +29,7 @@ const Dashboard: React.FC = () => {
       companyLogo: "/umurva.png",
     },
     {
+      id:3,
       title: "Design a Dashboard for SokoFund for a Fintech Product",
       description: "Build an app to track user health metrics.",
       status: "Open",
