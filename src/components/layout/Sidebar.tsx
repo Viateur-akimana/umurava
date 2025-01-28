@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image, { StaticImageData } from "next/image";
 import { usePathname } from "next/navigation";
 import { House } from "lucide-react";
-import Home from "../../../public/logo.png";
+import Home from "../../../public/web.png";
 import { FileText } from "lucide-react";
 import { UserPlus } from "lucide-react";
 import Settings from "../../../public/settings.png";

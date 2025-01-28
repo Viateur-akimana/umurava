@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import defaultTheme from "tailwindcss/defaultTheme";
 
 
 export default {
@@ -8,10 +9,8 @@ export default {
   ],
   theme: {
     extend: {
-      fontFamily: {
-        sans: ['var(--font-work-sans)', 'system-ui'],
+        sans: ['var(--font-work-sans)', ...defaultTheme.fontFamily.sans],
       },
     },
-  },
   plugins: [],
 } satisfies Config;
