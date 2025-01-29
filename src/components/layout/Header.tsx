@@ -5,7 +5,7 @@ import { FaBell, FaUser, FaSearch } from 'react-icons/fa';
 const Header = () => {
   const [term,setTerm]=useState("")
   return (
-    <div className="flex items-center justify-between bg-white p-4 pl-10 ">
+    <div className="flex items-center justify-between p-4 pl-10 ">
       <div className="relative w-full max-w-2xl ">
         <FaSearch className="absolute left-4 top-3 text-gray-600" />
         <input
