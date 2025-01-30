@@ -8,3 +8,7 @@ export interface Challenge {
     seniorityLevel: string;
     companyLogo: string;
   }
+
+export interface ChallengeCardProps {
+    challenge: Challenge;
+  }

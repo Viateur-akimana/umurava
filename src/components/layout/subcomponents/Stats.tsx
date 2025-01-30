@@ -4,7 +4,7 @@ import { FaPlus } from 'react-icons/fa'
 
 const Stats = () => {
   return (
-    <div className="relative bg-blue-500 md:p-14 p-8 rounded-lg flex justify-around items-center m-10">
+    <div className="relative mx-auto w-[1422px] h-[259px] m bg-blue-500 md:p-14 px-8   py-12 rounded-lg flex justify-around items-center m-10">
       <Image
         src="/ellipse1.png"
         alt="hero image"

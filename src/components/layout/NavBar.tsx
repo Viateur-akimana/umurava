@@ -21,22 +21,22 @@ const NavBar = () => {
   ];
 
   return (
-    <nav className="font-['Work_Sans'] mt-1">
+    <nav className="font-['Work_Sans'] ">
       <div className="px-4 sm:px-6 lg:px-8">
         <div className="flex h-24 justify-between  items-center">
-          <div className="flex items-center mb-2 pl-8 ml-20">
+          <div className="flex items-center pl-8 ml-20">
             <Link href="/">
               <Image
                 src="/logo.png"
                 alt="Umurava Logo"
                 width={155}
                 height={43}
-                className="ml-10 text-xl"
+                className="font-bold text-xl"
               />
             </Link>
           </div>
 
-          <div className=" hidden font-medium md:flex items-center gap-12 text-[#2B333] font-dm-sans ">
+          <div className=" hidden font-medium md:flex items-center gap-12 text-[#2B333] text-lg font-dm-sans ">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -48,7 +48,7 @@ const NavBar = () => {
             ))}
           </div>
 
-          <div className="md:flex items-center">
+          <div className="md:flex  items-center">
             <Link 
               href="/join" 
               className="inline-block px-8 py-3 bg-[#041738] mr-20 font-semibold text-white rounded transition-colors"

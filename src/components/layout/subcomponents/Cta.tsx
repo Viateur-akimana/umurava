@@ -1,43 +1,43 @@
+import { Button } from '@/components/ui/button'
 import Image from 'next/image'
+import router from 'next/router'
 import React from 'react'
+import { CtaCard } from './CtaCard'
 
 const Cta: React.FC = () => {
   return (
-    <div className="bg-white p-8 lg:px-28">
-      <div className='relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 bg-blue-600 p-8 rounded-xl'>
-        <div className="flex items-center">
+    <section className="w-full px-4 sm:px-12 md:px-24 my-8">
+      <div className="relative flex flex-col md:flex-row bg-primary text-white rounded-lg p-6 sm:p-8 gap-6 items-center">
+        <div className="w-full md:w-[40%] flex justify-center">
           <Image
+            className="rounded-md"
             src="/cta.png"
-            alt="cta image"
-            width={300}
-            height={150}
+            alt="two people"
+            width={398}
+            height={395}
+            objectFit="cover"
+            priority
           />
         </div>
-        <div className="flex flex-col justify-center">
-          <h2 className="text-xl text-white font-bold">Ready to Unlock Your Career Potential Today!</h2>
-          <p className="mt-2 text-white">
-            Join a challenge as a leader to gain valuable work experience, build an impressive portfolio, and increase your chances to land job opportunities and accelerate your career growth.
+        <div className="flex flex-col gap-4 ml-4 sm:gap-6 text-center md:text-left">
+          <h1 className="text-4xl sm:text-4xl font-bold leading-tight">
+            Ready to Unlock Your Career Potential Today!
+          </h1>
+          <p className="text-lg sm:text-xl font-regular">
+            Join a challenge or a hackathon to gain valuable work experience, build an impressive portfolio, 
+            increase your chances to land job opportunities, and accelerate your career growth.
           </p>
-          <button className="mt-4 bg-white text-blue-500 py-2 px-4 rounded">
-            View Challenge
-          </button>
+          <div className="flex justify-center md:justify-start">
+            <Button 
+              classNames="w-[180px] sm:w-[200px] bg-white text-primary text-sm p-2 sm:p-3 rounded-md" 
+              label="View Challenge" 
+              onClick={() => router.push('/hackathons')} 
+            />
+          </div>
         </div>
-        <Image
-          src="/ellipse3.png"
-          alt="hero image"
-          width={220}
-          height={80}
-          className='absolute right-0 top-0'
-        />
-        <Image
-          src="/ellipse4.png"
-          alt="hero image"
-          width={300}
-          height={80}
-          className='absolute left-3 bottom-0'
-        />
+        <CtaCard type="one" />
       </div>
-    </div>
+    </section>
   )
 }
 

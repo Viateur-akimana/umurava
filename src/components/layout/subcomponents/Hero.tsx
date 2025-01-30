@@ -1,30 +1,46 @@
-import Image from 'next/image'
-import React from 'react'
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import router from "next/router";
+import React from "react";
 
 const Hero = () => {
   return (
-    <div className="relative flex flex-col items-center md:flex-row justify-center md:px-12 py-12 md:py-14 mx-4 md:mx-0">
-      <div className="max-w-lg text-center md:text-left mb-68md:mr-12">
-        <h1 className="text-3xl md:text-5xl font-bold text-[#2B71F0] leading-tight">
-          Build Work Experience through Skills Challenges Program
-        </h1>
-        <p className="mt-6 text-lg text-[#2B3338]">
-          Enhance your employability and accelerate your career growth by working on hands-on projects & hackathons from various businesses & organizations.
-        </p>
-        <button className="w-[207px] h-[56px] text-white bg-[#2B71F0] rounded-lg hover:bg-blue-700 transition duration-300 mt-6">
-          Get Started
-        </button>
-      </div>
-      <div className="w-full md:w-1/2">
-        <Image
-          src="/hero.png"
-          alt="hero image"
-          width={846}
-          height={601}
+    <section
+      className="h-full grid sm:grid-cols-2 sm:px-24 sm:py-16 items-center"
+      id="hero"
+    >
+      <div className="flex flex-col items-start mx-32  sm:gap-8 sm:pt-24">
+        <header className="flex flex-col gap-4 sm:gap-8">
+          <h1 className="text-primary text-2xl mt-0 sm:text-5xl sm:leading-tight font-bold">
+            Build Work Experience through Skills Challenges Program
+          </h1>
+          <p className="text-black  text-xl leading-8">
+            Enhance your Employability and Accelerate your Career Growth by
+            working on Hands-on projects & hackathons from various businesses &
+            organizations.
+          </p>
+        </header>
+        <Button
+          classNames="w-[200px] bg-primary text-white hover:bg-primary/90 font-semibold p-2 sm:p-3"
+          label="Get Started"
+          onClick={() => router.push("/hackathons")}
         />
       </div>
-    </div>
-  )
-}
 
-export default Hero
+      <div className="flex-1">
+        <Image
+          aria-hidden
+          src="/label.png"
+          alt="hero"
+          layout="responsive"
+          width={200}
+          height={180}
+          objectFit="cover"
+          priority
+        />
+      </div>
+    </section>
+  );
+};
+
+export default Hero;
