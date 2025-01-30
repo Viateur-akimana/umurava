@@ -34,7 +34,7 @@ interface ChallengeCardProps {
         <h3 className="font-semibold mb-4 text-[#101928] text-lg">{challenge.title}</h3>
         <div>
           <p className="text-sm text-[#25272B] mb-2">Skills Needed:</p>
-          <div className="flex flex-row  ">
+          <div className="flex flex-row overflow-x-scroll scrollbar-hidden">
             {challenge.skillsNeeded.map((skill, index) => (
               <span
                 key={index}

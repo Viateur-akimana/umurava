@@ -13,7 +13,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white w-[530px] h-[469px] border border-[#E4E7EC] rounded-lg p-6 relative">
+      <div className="bg-white lg:w-3/5 border border-[#E4E7EC] rounded-lg p-6 relative">
         <div className="flex justify-center items-center w-[133px] h-[134px] bg-[#D0E0FC] mt-8 rounded-full mx-auto">
           <Send className="h-[64px] w-[64px] text-[#2B71F0]" />
         </div>

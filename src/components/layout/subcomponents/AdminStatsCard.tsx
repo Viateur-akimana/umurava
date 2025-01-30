@@ -17,7 +17,7 @@ export const AdminStatsCard: React.FC<AdminStatsCardProps> = ({ title, count, ra
           <p className="text-[#667185] text-ms ">{title}</p>
           <p className="flex text-2xl gap-4 text-black font-semiBold">
             {count}
-            <span className="flex items-center bg-[#E7F6EC] rounded-xl text-sm text-[#2B71F0]">
+            <span className="flex items-center bg-[#E7F6EC] rounded-full text-sm px-2 text-[#2B71F0]">
               <MoveUp size={14} className="inline" /> {rate}%
             </span>
           </p>
