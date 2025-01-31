@@ -17,7 +17,7 @@ export const AboutCard: React.FC<AboutProps> = ({ icon, title, desc, iconWidth, 
             </div>
             <div className="w-4/5 space-y-2 sm:space-y-4">
                 <h1 className="text-xl sm:text-2xl sm:leading-tight font-bold">{title}</h1>
-                <p>{desc} </p>
+                <p>{desc}</p>
             </div>
         </div>
     )

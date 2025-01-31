@@ -17,7 +17,7 @@ const NavBar = () => {
     { href: '/web/pages/challenges', label: 'Challenge & Hackthons' },
     { href: '/web/pages/education', label: 'For Educational Institutions' },
     { href: '/web/pages/about', label: 'About Us' },
-    { href: '/web/pages/contact', label: 'Contact Us' },
+    { href: '/#contact', label: 'Contact Us' },
   ];
 
   return (

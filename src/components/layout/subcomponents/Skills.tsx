@@ -1,36 +1,38 @@
-'use client';
-import React, { useState } from 'react';
-import Image from 'next/image';
-import { FaArrowRight } from 'react-icons/fa';
+"use client";
+import React, { useState } from "react";
+import Image from "next/image";
+import { FaArrowRight } from "react-icons/fa";
 
 const skills = [
-  'UI/UX Design',
-  'Graphic Design',
-  'Data Analysis & Research',
-  'Animation',
-  'Videography & Photography',
-  'Data Science',
-  'AI & Machine Learning',
-  'Web3',
-  'Digital Marketing & Communications',
+  "Data Analysis & Research", // First section
+  "Graphic Design",
+  "Animation",
+  "Videography & Photography", // Second section
+  "UI/UX Design",
+  "AI & Machine Learning", // Third section
+  "Data Science",
+  "Web3",
+  "Digital Marketing & Communications",
 ];
 
 const carouselData = [
   {
     id: 1,
-    image: '/dashboard.png',
+    image: "/dashboard.png",
     description:
-      'The Embedded Finance Platform and Payroll Management Software Solutions for your organization and Workforce.',
+      "The Embedded Finance Platform and Payroll Management Software Solutions for your organization and Workforce.",
   },
   {
     id: 2,
-    image: '/dashboard.png',
-    description: 'A data analytics platform helping businesses make informed decisions.',
+    image: "/dashboard.png",
+    description:
+      "A data analytics platform helping businesses make informed decisions.",
   },
   {
     id: 3,
-    image: '/dashboard.png',
-    description: 'Innovative tools to streamline your workflow and improve efficiency.',
+    image: "/dashboard.png",
+    description:
+      "Innovative tools to streamline your workflow and improve efficiency.",
   },
 ];
 
@@ -41,21 +43,24 @@ const Skills = () => {
   return (
     <div className="p-4 my-10 mb-10 md:p-8">
       <div className="flex flex-col items-center text-center">
-        <h1 className="text-3xl md:text-4xl font-bold text-[#03192E] mb-4 w-full md:w-3/5">
-        Skills Challenges Cover various in-demand skills and Careers for the digital economy
+        <h1 className="text-3xl md:text-4xl font-bold text-[#03192E] mb-6 leading-tight">
+        Skills Challenges Cover various in-demand skills and 
+        <br/>
+        Careers for the digital economy
         </h1>
-        <p className="mb-6 text-sm md:text-base text-[#687588] w-full md:w-3/5">
-          Explore the projects that various talents are working on.
+        <p className="mb-8 text-sm md:text-base text-[#687588] w-full md:w-2/3">
+          Dive into projects and challenges, exploring cutting-edge technologies
+          and career-building opportunities.
         </p>
-        <div className="flex justify-center gap-2 flex-wrap w-full md:w-4/5">
+        <div className="grid grid-cols-1 my-6 md:grid-cols-3 gap-6 w-full md:w-4/5">
           {skills.map((skill) => (
             <button
               key={skill}
               onClick={() => setActiveSkill(skill)}
-              className={`px-4 py-2 mx-auto rounded-lg text-sm font-semibold transition-all ${
+              className={`px-4 py-3 w-3/4 md:w-auto mx-auto rounded-lg text-sm font-semibold transition-transform shadow-sm transform ${
                 activeSkill === skill
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-[#F1F1F1] text-[#687588] hover:bg-blue-100'
+                  ? "bg-blue-600 shadow-lg text-white scale-105 "
+                  : "bg-[#F1F1F1] text-[#687588] font-regular hover:bg-blue-100 hover:shadow-md"
               }`}
             >
               {skill}
@@ -63,6 +68,7 @@ const Skills = () => {
           ))}
         </div>
       </div>
+
       <div className="flex items-center justify-center my-8">
         <div className="w-full md:w-4/5 bg-gray-100 p-6 md:p-8 rounded-lg text-center shadow-md">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
@@ -96,7 +102,7 @@ const Skills = () => {
                 key={index}
                 onClick={() => setCurrentSlide(index)}
                 className={`w-3 h-3 rounded-full transition-all ${
-                  currentSlide === index ? 'bg-blue-500' : 'bg-gray-300'
+                  currentSlide === index ? "bg-blue-500" : "bg-gray-300"
                 }`}
               />
             ))}

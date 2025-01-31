@@ -31,7 +31,7 @@ export const Footer = () => {
             </div>
             </div>
 
-            <div className="flex flex-col gap-4  sm:flex-row items-start justify-between sm:py-8">
+            <div className="flex flex-col gap-4  sm:flex-row items-start justify-between sm:py-8" id="contact">
                 <div className="flex flex-col">
                 <h4 className="font-bold text-lg text-white mb-4 text-start">Our address</h4>
                     <ul className="space-y-2 text-white">

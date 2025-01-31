@@ -9,7 +9,7 @@ export const CtaCard: React.FC<CtaProps> = ({ type }) => {
                 <Image
                     aria-hidden
                     src={type === "one" ? "/ellipse4.png" : "/ellipse3.png"}
-                    alt="Background shape"
+                    alt="shape"
                     layout="intrinsic"
                     width={200}
                     height={200}
@@ -19,8 +19,8 @@ export const CtaCard: React.FC<CtaProps> = ({ type }) => {
             <div className="absolute right-0 top-0">
                 <Image
                     aria-hidden
-                    src="/ellipse3.png"
-                    alt="Background shape"
+                    src={type === "two" ? "/ellipse4.png" : "/ellipse3.png"}
+                    alt="shape"
                     layout="intrinsic"
                     width={100}
                     height={100}
