@@ -75,7 +75,7 @@ const Challenges: React.FC = () => {
   };
 
   return (
-    <div className="p-6 lg:px-28 lg:py-12">
+    <div className="p-6 lg:px-28 lg:py-12 bg-[#F9FAFB]">
       <h2 className="text-3xl font-bold text-center mb-6">
         Explore Challenges & Hackathons
       </h2>

@@ -1,6 +1,8 @@
 import React from "react";
 import Image from "next/image";
 import InstructionCard from "./InstructionCard";
+import Participants from "./Participants";
+import { usePathname} from "next/navigation"
 
 interface ChallengeDetailsCardProps {
   projectBrief: string;
@@ -15,6 +17,9 @@ const ChallengeDetailsCard: React.FC<ChallengeDetailsCardProps> = ({
   productDesigns,
   deliverables,
 }) => {
+  const pathname = usePathname();
+
+  const isAdmin = pathname.startsWith("/admin");
   return (
     <div className="flex flex-col lg:flex-row md:flex-row gap-8 pt-8 px-2 lg:px-8 md:px-5 ">
       <div className="bg-white rounded-xl p-2 lg:p-8 md:p-3 max-w-2xl border border-[#E4E7EC]">
@@ -51,12 +56,15 @@ const ChallengeDetailsCard: React.FC<ChallengeDetailsCardProps> = ({
           ))}
         </ul>
       </div>
+      <div>
       <InstructionCard
       category="Web design"
       duration="7 Days"
       prize="$150 - $400"
-      buttonText="Submit your work"
     />
+   {isAdmin && (<Participants/>)}
+    
+   </div>
     </div>
   );
 };
