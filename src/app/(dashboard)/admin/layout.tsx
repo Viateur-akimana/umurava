@@ -8,12 +8,14 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col min-h-screen bg-[#F9FAFB]">
+    <div className="flex h-screen bg-[#F9FAFB]">
       <Sidebar />
-      <main className="ml-0 md:ml-44 lg:ml-64 pl-6">
+      <div className="flex-1 flex flex-col overflow-hidden">
         <Header />
-        {children}
-      </main>
+        <main className="flex-1 overflow-x-hidden overflow-y-auto" >
+          {children}
+        </main>
+      </div>
     </div>
   );
 }
