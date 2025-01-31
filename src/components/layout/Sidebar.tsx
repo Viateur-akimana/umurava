@@ -1,162 +1,130 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { House } from "lucide-react";
-import Home from "../../../public/web.png";
-import { FileText } from "lucide-react";
-import { UserPlus } from "lucide-react";
+import { House, FileText, UserPlus } from "lucide-react";
 import Settings from "../../../public/settings.png";
 import HelpCircle from "../../../public/headset.png";
 import Share2 from "../../../public/gift.png";
 import LogOut from "../../../public/sign-out.png";
 import profile from "../../../public/Image.png";
-import Modal from "./Modal"; 
-
-interface NavItem {
-  label: string;
-  href: string;
-  icon: React.ElementType;
-}
-
-interface FooterNavItem {
-  label: string;
-  href: string;
-  icon: StaticImageData;
-}
+import Modal from "./Modal";
 
 const Sidebar = () => {
   const pathname = usePathname();
-  const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [expanded, setExpanded] = useState(true);
+
+  const handleResize = () => {
+    if (window.innerWidth < 1280) {
+      setExpanded(false);
+    } else {
+      setExpanded(true);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+    handleResize();
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const baseRoute = pathname.startsWith("/admin") ? "/admin" : "/talent";
 
-  const mainNavItems: NavItem[] = [
-    {
-      label: "Dashboard",
-      href: `${baseRoute}/dashboard`,
-      icon: House,
-    },
-    {
-      label: "Challenges & Hackathons",
-      href: `${baseRoute}/challenges`,
-      icon: FileText,
-    },
-    {
-      label: "Community",
-      href: "#",
-      icon: UserPlus,
-      onClick: () => setIsModalOpen(true),
-    },
+  const mainNavItems = [
+    { label: "Dashboard", href: `${baseRoute}/dashboard`, icon: House },
+    { label: "Challenges & Hackathons", href: `${baseRoute}/challenges`, icon: FileText },
+    { label: "Community", href: "#", icon: UserPlus, onClick: () => setIsModalOpen(true) },
   ];
 
-  const footerNavItems: FooterNavItem[] = [
-    {
-      label: "Settings",
-      href: `${baseRoute}/settings`,
-      icon: Settings,
-    },
-    {
-      label: "Help Center",
-      href: `${baseRoute}/help`,
-      icon: HelpCircle,
-    },
-    {
-      label: "Refer family & friends",
-      href: `${baseRoute}/refer`,
-      icon: Share2,
-    },
+  const footerNavItems = [
+    { label: "Settings", href: `${baseRoute}/settings`, icon: Settings },
+    { label: "Help Center", href: `${baseRoute}/help`, icon: HelpCircle },
+    { label: "Refer family & friends", href: `${baseRoute}/refer`, icon: Share2 },
   ];
 
   return (
-    <>
-      <aside className="fixed left-0 top-0 h-screen w-272 bg-[#2B71F0] text-white flex flex-col px-5">
-        <div className="pt-10 pb-4 pl-8">
-          <Link href={`${baseRoute}/dashboard`} className="flex items-center">
-            <div className="flex items-center justify-center">
-              <Image src={Home} alt="Home" width={55} height={35} />
-            </div>
-          </Link>
-        </div>
+    <div className={`relative h-screen transition-all ${expanded ? "w-64" : "w-14"} bg-[#2B71F0] text-white flex flex-col`}>
 
-        <nav className="flex-1">
-          <ul className="space-y-2">
-            {mainNavItems.map((item) => {
-              const isActive = pathname === item.href;
-              return (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    onClick={item.onClick} 
-                    className={`flex items-center gap-3 px-2 py-3 rounded-lg transition-colors ${
-                      isActive
-                        ? "bg-white text-[#2B71F0]"
-                        : "text-white hover:bg-white/10"
-                    }`}
-                  >
-                    {React.createElement(item.icon)}
-                    <span
-                      className={
-                        isActive
-                          ? "text-[#2B71F0] font-medium"
-                          : "text-white font-medium"
-                      }
-                    >
-                      {item.label}
-                    </span>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
 
-        <div className="pb-4">
-          <ul className="space-y-2">
-            {footerNavItems.map((item) => (
-              <li key={item.href}>
+      <div className="pt-10 pb-4 pl-[8%] flex items-center justify-between">
+        <Link href={`${baseRoute}/dashboard`} className="flex items-center justify-center">
+          <Image src="/web.png" alt="Home" width={35} height={35} className="" />
+        </Link>
+      </div>
+
+      <nav className="flex-1 overflow-y-auto">
+        <ul className="space-y-2 px-2">
+          {mainNavItems.map((item) => {
+            const isActive = pathname === item.href;
+            return (
+              <li key={item.href} className="group">
                 <Link
                   href={item.href}
-                  className="flex items-center gap-3 px-2 py-3 rounded-lg hover:bg-white/10 transition-colors"
+                  onClick={item.onClick}
+                  className={`flex items-center gap-4 px-2 py-3 rounded-lg transition-colors ${isActive
+                    ? "bg-white text-[#2B71F0] flex items-center"
+                    : "hover:bg-white/10"
+                    }`}
                 >
-                  <Image
-                    src={item.icon}
-                    alt={item.label}
-                    width={20}
-                    height={20}
-                  />
-                  <span className="text-sm font-medium">{item.label}</span>
+                  {React.createElement(item.icon, { size: 20 })}
+                  {expanded && <span className="font-medium">{item.label}</span>}
+                  {!expanded && (
+                    <div className="absolute left-full z-50 rounded-md px-2 py-1 ml-2 bg-indigo-100 text-indigo-800 text-sm font-semibold text-nowrap invisible opacity-20 -translate-x-3 transition-all group-hover:visible group-hover:opacity-100 group-hover:translate-x-0">
+                      {item.label}
+                    </div>
+                  )}
                 </Link>
               </li>
-            ))}
-          </ul>
+            );
+          })}
+        </ul>
+      </nav>
 
-          <div className="mt-6 py-3 rounded-lg flex items-center gap-3">
-            <div className="w-10 h-10 bg-gray-300 rounded-full overflow-hidden">
-              <Image
-                width={40}
-                height={40}
-                src={profile}
-                alt="Profile"
-                className="object-cover"
-              />
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium truncate">Hilaire Sh</p>
-              <p className="text-xs text-white/70 truncate">hilaire@uidesign</p>
-            </div>
-            <button
-              className="pr-9 rounded-full transition-colors"
-              aria-label="Logout"
-            >
-              <Image src={LogOut} alt="Log out" width={18} height={18} />
-            </button>
+      <div className="pb-4 px-2">
+        <ul className="space-y-2">
+          {footerNavItems.map((item) => (
+            <li key={item.href}>
+              <Link
+                href={item.href}
+                className="flex items-center gap-4 px-2 py-3 rounded-lg hover:bg-white/10 transition-colors group"
+              >
+                <Image src={item.icon} alt={item.label} width={20} height={20} />
+                {expanded && <span className="font-medium text-sm">{item.label}</span>}
+                {!expanded && (
+                  <div className="absolute left-full rounded-md px-2 py-1 ml-2 bg-indigo-100 text-indigo-800 text-sm font-semibold text-nowrap invisible opacity-20 -translate-x-3 transition-all group-hover:visible group-hover:opacity-100 group-hover:translate-x-0">
+                    {item.label}
+                  </div>
+                )}
+              </Link>
+            </li>
+          ))}
+        </ul>
+
+        <div className="mt-6 flex items-center gap-4 px-2">
+          <div className="lg:w-10 lg:h-10 rounded-full overflow-hidden bg-gray-300">
+            <Image src={profile} alt="Profile" width={40} height={40} />
           </div>
+          {expanded && (
+            <>
+              <div className="flex-1 min-w-0">
+                <p className="font-medium truncate">Hilaire Sh</p>
+                <p className="text-xs text-white/70 truncate">hilaire@uidesign</p>
+              </div>
+              <button
+                className="ml-auto hover:text-red-500 transition-colors"
+                aria-label="Logout"
+              >
+                <Image src={LogOut} alt="Logout" width={18} height={18} />
+              </button>
+            </>
+          )}
         </div>
-      </aside>
+      </div>
+
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-    </>
+    </div>
   );
 };
 

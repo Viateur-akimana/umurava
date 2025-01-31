@@ -2,8 +2,8 @@ import React from "react";
 
 const CreateChallenge = () => {
   return (
-    <div className="flex justify-center mx-auto my-6 items-center min-h-screen">
-      <div className="bg-white p-8 rounded-xl border w-[670px] h-[1085px]">
+    <div className="w-full flex justify-center mx-auto my-6 items-center min-h-screen">
+      <div className="bg-white py-8 px-3 lg:px-8 md:px-5 rounded-xl border w-full lg:w-3/5 md:w-4/5">
         <h1 className="text-2xl font-bold text-center mb-4">
           Create New Challenge
         </h1>
@@ -18,7 +18,7 @@ const CreateChallenge = () => {
             <input
               type="text"
               placeholder="Enter Title"
-              className="w-full px-4 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
             />
           </div>
           <div className="flex gap-4 mb-4">
@@ -28,7 +28,7 @@ const CreateChallenge = () => {
               </label>
               <input
                 type="date"
-                className="w-full px-4 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
               />
             </div>
             <div className="w-1/2">
@@ -38,7 +38,7 @@ const CreateChallenge = () => {
               <input
                 type="text"
                 placeholder="Duration"
-                className="w-full px-4 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
               />
             </div>
           </div>
@@ -51,7 +51,7 @@ const CreateChallenge = () => {
               <input
                 type="text"
                 placeholder="Prize"
-                className="w-full px-4 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
               />
             </div>
             <div className="w-1/2">
@@ -61,7 +61,7 @@ const CreateChallenge = () => {
               <input
                 type="email"
                 placeholder="Email"
-                className="w-full px-4 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
               />
             </div>
           </div>
@@ -105,16 +105,16 @@ const CreateChallenge = () => {
               Keep this simple, up to 600 characters
             </p>
           </div>
-          <div className="flex space-x-3 mt-8">
+          <div className="w-full flex justify-between gap-3 mt-8">
             <button
               type="button"
-              className="px-6 py-2 w-[220px] h-[55px] text-gray-700 border border-blue-500  rounded-lg hover:bg-gray-300"
+              className="w-2/5 px-6 py-2 border border-blue-500 text-blue-500 font-semibold  rounded-lg hover:bg-gray-300"
             >
                 Cancel
             </button>
             <button
               type="submit"
-              className="px-6 py-2 w-[324px] text-white bg-blue-500 rounded-lg hover:bg-blue-600"
+              className="w-3/5 px-6 py-2 text-white font-semibold bg-blue-500 rounded-lg hover:bg-blue-600"
             >
               Create Challenge
             </button>

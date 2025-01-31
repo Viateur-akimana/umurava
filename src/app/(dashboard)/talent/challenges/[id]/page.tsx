@@ -30,7 +30,7 @@ const ChallengeDetailsPage: React.FC = () => {
 
   return (
     <div>
-      <div className="flex items-center bg-white border h-16 pl-5 border-x-[#E4E7EC] space-x-3 text-md text-gray-600">
+      <div className="flex items-center bg-white border h-16 border-x-[#E4E7EC] space-x-3 text-md text-gray-600">
         <button
           onClick={() => router.back()}
           className="flex items-center space-x-1 pl-6  hover:underline"
@@ -46,7 +46,7 @@ const ChallengeDetailsPage: React.FC = () => {
         </span>
       </div>
 
-      <div className="flex mx-auto top-4 right-4">
+      <div className="flex">
         <ChallengeDetailsCard
           projectBrief={projectBrief}
           productRequirements={productRequirements}
