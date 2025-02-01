@@ -1,8 +1,12 @@
-import React from 'react'
+import EditChallengeForm from '@/components/layout/EditChallengeForm';
 
 const ChallengeEditPage = () => {
+ 
+
   return (
-    <div>ChallengeEditPage</div>
+    <div className="flex mx-auto top-4 right-4 sm:px-4">
+<EditChallengeForm/>
+  </div>
   )
 }
 
