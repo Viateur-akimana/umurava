@@ -1,95 +1,92 @@
 'use client';
-
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
-  const isActiveLink = (href: string) => pathname === href;
-
-  const navLinks = [
-    { href: '/', label: 'Home' },
-    { href: '/web/pages/challenges', label: 'Challenge & Hackthons' },
-    { href: '/web/pages/education', label: 'For Educational Institutions' },
-    { href: '/web/pages/about', label: 'About Us' },
-    { href: '/#contact', label: 'Contact Us' },
-  ];
-
   return (
-    <nav className="font-['Work_Sans'] ">
-      <div className="px-4 sm:px-6 lg:px-8">
-        <div className="flex h-24 justify-between  items-center">
-          <div className="flex items-center pl-8 ml-20">
-            <Link href="/">
-              <Image
-                src="/logo.png"
-                alt="Umurava Logo"
-                width={155}
-                height={43}
-                className="font-bold text-xl"
-              />
+    <nav className="bg-white">
+      <div className=" lg:mx-8 mx-0 px-4 sm:px-6 xl:px-8 lg:px-0 pt-3 flex justify-between items-center">
+        <div className="flex items-center">
+          <Link href="/" className="flex-shrink-0 flex items-center">
+            <Image
+              src="/logo.png"
+              alt="logo"
+              width={140}
+              height={150}
+              className='hidden xl:block lg:hidden sm:block'
+            />
+            <Image
+              src="/blue-logo.png"
+              alt="logo"
+              width={50}
+              height={50}
+              className='block md:hidden lg:block xl:hidden sm:hidden'
+            />
+          </Link>
+        </div>
+        <div className="hidden lg:flex items-center space-x-3">
+          <Link href="/" className={`block px-3 py-2 rounded-md font-semibold text-nowrap ${pathname === '/' ? 'text-blue-600' : 'text-gray-600 hover:text-gray-900'}`}>
+            Home
+          </Link>
+          <Link href="/web/pages/challenges" className={`block px-3 py-2 rounded-md font-semibold text-nowrap ${pathname === '/web/pages/challenges' ? 'text-blue-600' : 'text-gray-600 hover:text-gray-900'}`}>
+            Challenges & Hackathons
+          </Link>
+          <Link href="/web/pages/education" className={`block px-3 py-2 rounded-md font-semibold text-nowrap ${pathname === '/web/pages/education' ? 'text-blue-600' : 'text-gray-600 hover:text-gray-900'}`}>
+            For Learning Institutions
+          </Link>
+          <Link href="/web/pages/about" className={`block px-3 py-2 rounded-md font-semibold text-nowrap ${pathname === '/web/pages/about' ? 'text-blue-600' : 'text-gray-600 hover:text-gray-900'}`}>
+            About Us
+          </Link>
+          <Link href="/web/pages/contact" className={`block px-3 py-2 rounded-md font-semibold text-nowrap ${pathname === '/web/pages/contact' ? 'text-blue-600' : 'text-gray-600 hover:text-gray-900'}`}>
+            Contact Us
+          </Link>
+        </div>
+        <div className="hidden lg:flex items-center">
+          <Link href="/join" className="block px-4 py-2 rounded-md text-white bg-[#041738] hover:bg-[#12274d] text-nowrap">
+            Join the Program
+          </Link>
+        </div>
+        <div className="lg:hidden flex items-center">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none"
+          >
+            {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
+        </div>
+      </div>
+
+      {isOpen && (
+        <div className="lg:hidden">
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 flex flex-col items-center">
+            <Link href="/" className={`block px-3 py-2 rounded-md font-semibold text-nowrap ${pathname === '/' ? 'text-blue-600' : 'text-gray-600 hover:text-gray-900'}`}>
+              Home
             </Link>
-          </div>
-
-          <div className=" hidden font-medium md:flex items-center gap-12 text-[#2B333] text-lg font-dm-sans ">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`text-base ${isActiveLink(link.href) ? 'text-[#2B71F0]' : ''}`}
-              >
-                {link.label}
-              </Link>
-            ))}
-          </div>
-
-          <div className="md:flex  items-center">
-            <Link 
-              href="/join" 
-              className="inline-block px-8 py-3 bg-[#041738] mr-20 font-semibold text-white rounded transition-colors"
-            >
+            <Link href="/web/pages/challenges" className={`block px-3 py-2 rounded-md font-semibold text-nowrap ${pathname === '/web/pages/challenges' ? 'text-blue-600' : 'text-gray-600 hover:text-gray-900'}`}>
+              Challenges & Hackathons
+            </Link>
+            <Link href="/web/pages/education" className={`block px-3 py-2 rounded-md font-semibold text-nowrap ${pathname === '/web/pages/education' ? 'text-blue-600' : 'text-gray-600 hover:text-gray-900'}`}>
+              For Learning Institutions
+            </Link>
+            <Link href="/web/pages/about" className={`block px-3 py-2 rounded-md font-semibold text-nowrap ${pathname === '/web/pages/about' ? 'text-blue-600' : 'text-gray-600 hover:text-gray-900'}`}>
+              About Us
+            </Link>
+            <Link href="/web/pages/contact" className={`block px-3 py-2 rounded-md font-semibold text-nowrap ${pathname === '/web/pages/contact' ? 'text-blue-600' : 'text-gray-600 hover:text-gray-900'}`}>
+              Contact Us
+            </Link>
+            <Link href="/join" className="block px-4 py-2 rounded-md text-white bg-[#041738] hover:bg-[#12274d]">
               Join the Program
             </Link>
           </div>
-
-          <div className="md:hidden flex items-center">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="p-2 rounded-md text-gray-400 hover:text-gray-500 focus:outline-none"
-            >
-              {isOpen ? <X className="h-8 w-8" /> : <Menu className="h-8 w-8" />}
-            </button>
-          </div>
         </div>
-        {isOpen && (
-          <div className="md:hidden py-6">
-            <div className="flex flex-col space-y-6 text-[#2B3338] text-xl">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`text-base ${isActiveLink(link.href) ? 'text-blue-600' : ''}`}
-                >
-                  {link.label}
-                </Link>
-              ))}
-              <Link 
-                href="/join" 
-                className="inline-block px-8 py-3 bg-[#041738] font-semibold text-white rounded transition-colors"
-              >
-                Join the Program
-              </Link>
-            </div>
-          </div>
-        )}
-      </div>
+      )}
     </nav>
   );
 };
-
 export default NavBar;

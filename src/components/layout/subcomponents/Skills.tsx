@@ -44,24 +44,23 @@ const Skills = () => {
     <div className="p-4 my-10 mb-10 md:p-8">
       <div className="flex flex-col items-center text-center">
         <h1 className="text-3xl md:text-4xl font-bold text-[#03192E] mb-6 leading-tight">
-        Skills Challenges Cover various in-demand skills and 
-        <br/>
-        Careers for the digital economy
+          Skills Challenges Cover various in-demand skills and
+          <br />
+          Careers for the digital economy
         </h1>
         <p className="mb-8 text-sm md:text-base text-[#687588] w-full md:w-2/3">
           Dive into projects and challenges, exploring cutting-edge technologies
           and career-building opportunities.
         </p>
-        <div className="grid grid-cols-1 my-6 md:grid-cols-3 gap-6 w-full md:w-4/5">
+        <div className="flex justify-center gap-2 flex-wrap w-full md:w-4/5">
           {skills.map((skill) => (
             <button
               key={skill}
               onClick={() => setActiveSkill(skill)}
-              className={`px-4 py-3 w-3/4 md:w-auto mx-auto rounded-lg text-sm font-semibold transition-transform shadow-sm transform ${
-                activeSkill === skill
-                  ? "bg-blue-600 shadow-lg text-white scale-105 "
-                  : "bg-[#F1F1F1] text-[#687588] font-regular hover:bg-blue-100 hover:shadow-md"
-              }`}
+              className={`px-4 py-2 rounded-lg text-sm font-semibold ${activeSkill === skill
+                ? 'bg-blue-600 text-white'
+                : 'bg-gray-200 text-gray-500 hover:bg-blue-100'
+                }`}
             >
               {skill}
             </button>
@@ -101,9 +100,8 @@ const Skills = () => {
               <button
                 key={index}
                 onClick={() => setCurrentSlide(index)}
-                className={`w-3 h-3 rounded-full transition-all ${
-                  currentSlide === index ? "bg-blue-500" : "bg-gray-300"
-                }`}
+                className={`w-3 h-3 rounded-full transition-all ${currentSlide === index ? "bg-blue-500" : "bg-gray-300"
+                  }`}
               />
             ))}
           </div>
