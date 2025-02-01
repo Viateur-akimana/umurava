@@ -15,8 +15,7 @@ const workSans = Work_Sans({
 const NavigationWrapper = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   
-  // Check if current path is in restricted areas
-  const isRestrictedArea = pathname.startsWith('/talent') || pathname.startsWith('/admin');
+  const isRestrictedArea = pathname.startsWith('/talent') || pathname.startsWith('/admin') || pathname.startsWith('/login') || pathname.startsWith('/signup');
 
   if (isRestrictedArea) {
     return <>{children}</>;
