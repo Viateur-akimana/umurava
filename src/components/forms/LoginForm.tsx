@@ -21,7 +21,7 @@ const LoginForm: React.FC = () => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-
+ 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
   
@@ -30,15 +30,12 @@ const LoginForm: React.FC = () => {
         "https://umurava-skill-challenge-backend.onrender.com/api/v1/auth/login",
         formData
       );
-  
       if (response.status === 200) {
-        const { data } = response;  // response.data is the token
-  
-        localStorage.setItem("token", data); // Store the token
-        localStorage.setItem("isAdmin", JSON.stringify(formData.email === "user586@example.com"));  // Adjust logic for isAdmin if needed
-  
-        // Redirect based on admin status
-        if (formData.email === "user586@example.com") {  // Add your admin check logic here
+        const token = response.data.data;
+        const isAdmin = response.data.isAdmin; 
+        localStorage.setItem("token", token);
+        localStorage.setItem("isAdmin", JSON.stringify(isAdmin));
+        if (isAdmin) {
           router.push("/admin");
         } else {
           router.push("/talent");
