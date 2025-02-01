@@ -11,7 +11,7 @@ const NavBar = () => {
 
   return (
     <nav className="bg-white">
-      <div className="lg:mx-8 mx-auto px-4 sm:px-6 lg:px-8 pt-3 flex justify-between items-center">
+      <div className=" lg:mx-8 mx-0 px-4 sm:px-6 xl:px-8 lg:px-0 pt-3 flex justify-between items-center">
         <div className="flex items-center">
           <Link href="/" className="flex-shrink-0 flex items-center">
             <Image

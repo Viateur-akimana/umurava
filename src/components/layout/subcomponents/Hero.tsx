@@ -6,7 +6,7 @@ import React from "react";
 const Hero = () => {
   return (
     <section
-      className="grid grid-cols-1 lg:grid-cols-2 xl:mx-20 lg:mx-12 md:mx-5 mx-0 sm:px-8 items-center"
+      className="grid grid-cols-1 lg:grid-cols-2 xl:mx-20 lg:mx-12 mx-5 sm:px-8 items-center"
       id="hero"
     >
       <div className="flex flex-col items-start xl:mx-12 mx-0 py-4 gap-5">
