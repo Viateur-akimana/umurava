@@ -6,12 +6,12 @@ import React from "react";
 const Hero = () => {
   return (
     <section
-      className="h-full grid sm:grid-cols-2 sm:px-24 sm:py-16 items-center"
+      className="grid grid-cols-1 lg:grid-cols-2 xl:mx-20 lg:mx-12 md:mx-5 mx-0 sm:px-8 items-center"
       id="hero"
     >
-      <div className="flex flex-col items-start mx-32  sm:gap-8 sm:pt-24">
+      <div className="flex flex-col items-start xl:mx-12 mx-0 py-4 gap-5">
         <header className="flex flex-col gap-4 sm:gap-8">
-          <h1 className="text-primary text-2xl mt-0 sm:text-5xl sm:leading-tight font-bold">
+          <h1 className="text-primary text-4xl mt-0 sm:leading-tight font-bold">
             Build Work Experience through Skills Challenges Program
           </h1>
           <p className="text-black  text-xl leading-8">
@@ -27,16 +27,17 @@ const Hero = () => {
         />
       </div>
 
-      <div className="flex-1">
+      <div className="flex-1 p-5">
         <Image
           aria-hidden
-          src="/label.png"
+          src="/label1.png"
           alt="hero"
           layout="responsive"
           width={200}
           height={180}
           objectFit="cover"
           priority
+          className=""
         />
       </div>
     </section>
