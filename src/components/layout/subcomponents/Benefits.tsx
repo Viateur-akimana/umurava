@@ -41,7 +41,7 @@ const benefits: Benefit[] = [
 ];
 
 const BenefitCard: React.FC<{ benefit: Benefit }> = ({ benefit }) => (
-  <div className=" rounded-lg">
+  <div className=" rounded-lg md:rounded-xl p-6 ">
     <div className="flex items-center justify-center w-14 h-14 bg-blue-600 rounded-full mb-4">
       {benefit.icon}
     </div>
