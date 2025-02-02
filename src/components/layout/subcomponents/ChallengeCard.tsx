@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 export const ChallengeCard: React.FC<ChallengeCardProps> = ({ challenge }) => {
   const router = useRouter();
 
-  const handleChallengeClick = (id: number) => {
+  const handleChallengeClick = (id: string) => {
     router.push(`/talent/challenges/${id}`);
   };
 

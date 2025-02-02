@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
-import { Challenge } from "@/types/challenge";
+// import { Challenge } from "@/types/challenge";
 import React, { useEffect, useState } from "react";
 import { ChallengeCard } from "@/components/layout/subcomponents/ChallengeCard";
 import { FileText } from "lucide-react";

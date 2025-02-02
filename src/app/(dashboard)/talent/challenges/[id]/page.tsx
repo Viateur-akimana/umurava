@@ -84,7 +84,7 @@ const ChallengeDetailsPage: React.FC<ChallengeDetailsPageProps> = ({ params }) =
 
   // Handle loading and error states
   if (loading) {
-    return <div>Loading challenge details...</div>;
+    return <div className="w-full h-screen flex items-center justify-center">Loading challenge details...</div>;
   }
 
   if (error) {
@@ -115,10 +115,15 @@ const ChallengeDetailsPage: React.FC<ChallengeDetailsPageProps> = ({ params }) =
 
       <div className="flex">
         <ChallengeDetailsCard
+          title={challenge.title}
           projectBrief={challenge.projectBrief}
           productRequirements={challenge.projectRequirements}
           productDesigns={challenge.projectDescription}
           deliverables={challenge.deliverables}
+          contactEmail={challenge.contactEmail}
+          category={challenge.category}
+          prize={challenge.moneyPrize}
+          timeline={challenge.timeline}
         />
       </div>
     </div>

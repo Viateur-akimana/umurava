@@ -71,7 +71,7 @@ export const useChallenges = (
         fetchChallenges();
     }, [status, recent, page]);
 
-    return { challenges, challengeCounts, loading, error, page, totalPages, setPage };
+    return { challenges, setChallenges, challengeCounts, loading, error, page, totalPages, setPage };
 };
 
 
@@ -87,6 +87,22 @@ export const useChallengeById = (id: string) => {
 
             try {
                 const data = await getChallengeById(id); // Fetch the challenge using its ID
+
+                if (data) {
+                    const today = new Date();
+                    const deadline = new Date(data.deadline);
+                    
+                    let remainingDays = Math.ceil(
+                        (deadline.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
+                    );
+
+                    // Ensure the remaining days never go below 0
+                    remainingDays = Math.max(remainingDays, 0);
+                    
+                    setChallenge({ ...data, timeline: `${remainingDays} Days` });
+                    return;
+                }
+
                 setChallenge(data);
             } catch (err) {
                 setError("Failed to fetch challenge.");

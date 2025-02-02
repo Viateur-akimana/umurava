@@ -13,6 +13,7 @@ export interface Challengee {
     createdBy: string;
     status: "open" | "ongoing" | "completed";
     category: string;
+    timeline: string;
     seniorityLevel: string[];
     skillsNeeded: string[];
     participants: unknown[];

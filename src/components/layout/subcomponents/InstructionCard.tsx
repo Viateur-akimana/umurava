@@ -8,6 +8,7 @@ interface CombinedProps extends InstructionCardProps {
 }
 
 export default function InstructionCard({
+  contact,
   category,
   duration,
   prize,
@@ -17,7 +18,7 @@ export default function InstructionCard({
   const router = useRouter()
   const isAdmin = pathname.startsWith("/admin");
   const isTalent = pathname.startsWith("/talent");
-  const handleChallengeClick = (id: number) => {
+  const handleChallengeClick = (id: string) => {
     router.push(`/admin/challenges/${id}/edit`);
   };
   return (
@@ -30,7 +31,7 @@ export default function InstructionCard({
             <Mail className="text-blue-500" />
           </div>
           <div>
-            <p className="text-md font-medium">talent@umurava.africa</p>
+            <p className="text-md font-medium">{contact}</p>
             <p className="text-xs text-gray-500">Contact Email</p>
           </div>
         </div>
@@ -72,7 +73,7 @@ export default function InstructionCard({
                 <button className="bg-[#E5533C] hover:bg-red-700 duration-500 rounded-lg py-2 text-white text-lg font-semibold w-[50%]">
                   Delete
                 </button>
-                <button onClick={() => handleChallengeClick(challenge.id)} className="bg-[#2B71F0] hover:bg-blue-700 duration-500 rounded-lg py-2 text-white text-lg font-semibold w-[50%]">
+                <button onClick={() => challenge && handleChallengeClick(challenge._id)} className="bg-[#2B71F0] hover:bg-blue-700 duration-500 rounded-lg py-2 text-white text-lg font-semibold w-[50%]">
                   Edit
                 </button>
               </div>

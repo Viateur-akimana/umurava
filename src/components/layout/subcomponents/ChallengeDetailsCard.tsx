@@ -2,20 +2,30 @@ import React from "react";
 import Image from "next/image";
 import InstructionCard from "./InstructionCard";
 import Participants from "./Participants";
-import { usePathname} from "next/navigation"
+import { usePathname } from "next/navigation"
 
 interface ChallengeDetailsCardProps {
+  title: string;
   projectBrief: string;
   productRequirements: string[];
-  productDesigns:string[];
+  productDesigns: string[];
   deliverables: string[];
+  contactEmail: string;
+  category: string;
+  timeline: string;
+  prize: string;
 }
 
 const ChallengeDetailsCard: React.FC<ChallengeDetailsCardProps> = ({
+  title,
   projectBrief,
   productRequirements,
   productDesigns,
   deliverables,
+  contactEmail,
+  category,
+  timeline,
+  prize
 }) => {
   const pathname = usePathname();
 
@@ -32,7 +42,7 @@ const ChallengeDetailsCard: React.FC<ChallengeDetailsCardProps> = ({
             className="rounded-full"
           />
         </div>
-        <h2 className="font-semibold mb-4">Project Brief : {projectBrief}</h2>
+        <h2 className="font-semibold mb-4">Project Brief : {title}</h2>
         <p className="mb-6 text-[#475367]">{projectBrief}</p>
 
         <h1 className="font-bold text-xl mb-2 text-black">Tasks: </h1>
@@ -57,14 +67,15 @@ const ChallengeDetailsCard: React.FC<ChallengeDetailsCardProps> = ({
         </ul>
       </div>
       <div>
-      <InstructionCard
-      category="Web design"
-      duration="7 Days"
-      prize="$150 - $400"
-    />
-   {isAdmin && (<Participants/>)}
-    
-   </div>
+        <InstructionCard
+          contact={contactEmail}
+          category={category}
+          duration={timeline}
+          prize={prize}
+        />
+        {isAdmin && (<Participants />)}
+
+      </div>
     </div>
   );
 };
