@@ -32,7 +32,7 @@ const ChallengeDetailsCard: React.FC<ChallengeDetailsCardProps> = ({
             className="rounded-full"
           />
         </div>
-        <h2 className="font-semibold mb-4">Project Brief : Payroll and HR Management System</h2>
+        <h2 className="font-semibold mb-4">Project Brief : {projectBrief}</h2>
         <p className="mb-6 text-[#475367]">{projectBrief}</p>
 
         <h1 className="font-bold text-xl mb-2 text-black">Tasks: </h1>
