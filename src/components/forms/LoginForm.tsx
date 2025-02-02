@@ -14,6 +14,7 @@ const LoginForm: React.FC = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const adminEmails = ["user586@example.com", "superadmin@example.com"];
 
   const router = useRouter();
 
@@ -30,11 +31,13 @@ const LoginForm: React.FC = () => {
         "https://umurava-skill-challenge-backend.onrender.com/api/v1/auth/login",
         formData
       );
+      
       if (response.status === 200) {
         const token = response.data.data;
-        const isAdmin = response.data.isAdmin; 
+        const isAdmin = adminEmails.includes(formData.email); 
         localStorage.setItem("token", token);
         localStorage.setItem("isAdmin", JSON.stringify(isAdmin));
+        
         if (isAdmin) {
           router.push("/admin");
         } else {

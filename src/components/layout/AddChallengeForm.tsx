@@ -1,4 +1,6 @@
 "use client";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 
 const CreateChallenge = () => {
@@ -8,14 +10,14 @@ const CreateChallenge = () => {
     moneyPrize: "",
     contactEmail: "",
     projectBrief: "",
-    projectDescription: "",
+    projectDescription: [] as string[],
     projectRequirements: [] as string[],
-    deliverables: "",
-    seniorityLevel: "junior",
+    deliverables: [] as string[],
+    seniorityLevel: ["junior"],
     category: "design",
     skillsNeeded: [] as string[],
   });
-
+  const router = useRouter()
   const [duration, setDuration] = useState(0);
   const [currentDate] = useState(new Date().toISOString().split("T")[0]);
 
@@ -29,30 +31,65 @@ const CreateChallenge = () => {
     }
   }, [formData.deadline]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({
-      ...prevState,
-      [name]: value,
-    }));
+    if (name === "seniorityLevel") {
+      setFormData((prevState) => ({
+        ...prevState,
+        [name]: [value],
+      }));
+    } else {
+      setFormData((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    }
   };
 
-  const handleArrayChange = (e: React.KeyboardEvent<HTMLInputElement>, field: "skillsNeeded" | "projectRequirements") => {
+  const handleArrayChange = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    field:
+      | "skillsNeeded"
+      | "projectRequirements"
+      | "projectDescription"
+      | "deliverables"
+  ) => {
     const target = e.target as HTMLInputElement;
     const value = target.value.trim();
-    
+
     if (e.key === "Enter" && value !== "") {
       e.preventDefault();
-      setFormData(prevState => ({
+      setFormData((prevState) => ({
         ...prevState,
         [field]: [...prevState[field], value],
       }));
       target.value = "";
     }
   };
+  const handleTextareaArrayChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement>,
+    field: "projectDescription" | "deliverables"
+  ) => {
+    const value = e.target.value;
+    setFormData((prevState) => ({
+      ...prevState,
+      [field]: [value], // Wrap the value in an array
+    }));
+  };
 
-  const handleRemoveArrayItem = (index: number, field: "skillsNeeded" | "projectRequirements") => {
-    setFormData(prevState => ({
+  const handleRemoveArrayItem = (
+    index: number,
+    field:
+      | "skillsNeeded"
+      | "projectRequirements"
+      | "projectDescription"
+      | "deliverables"
+  ) => {
+    setFormData((prevState) => ({
       ...prevState,
       [field]: prevState[field].filter((_, i) => i !== index),
     }));
@@ -60,53 +97,64 @@ const CreateChallenge = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
     try {
-      const response = await fetch(
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
         "https://umurava-skill-challenge-backend.onrender.com/api/v1/challenges",
+        formData,
         {
-          method: "POST",
           headers: {
-            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify(formData),
         }
       );
-
-      const data = await response.json();
-      if (response.ok) {
+  
+      if (response.status === 200 || response.status === 201) {
         alert("Challenge created successfully!");
-        // Reset form after successful submission
         setFormData({
           title: "",
           deadline: "",
           moneyPrize: "",
           contactEmail: "",
           projectBrief: "",
-          projectDescription: "",
+          projectDescription: [],
           projectRequirements: [],
-          deliverables: "",
-          seniorityLevel: "junior",
+          deliverables: [],
+          seniorityLevel: ["junior"],
           category: "design",
           skillsNeeded: [],
         });
-      } else {
-        alert(`Failed to create challenge: ${data.message || 'Please try again.'}`);
+        router.push("/challenges");
       }
     } catch (error) {
-      console.error("Error creating challenge:", error);
-      alert("An error occurred while creating the challenge. Please try again.");
+      if (axios.isAxiosError(error)) {
+        // Handle Axios specific errors
+        const message = error.response?.data?.message || "Please try again.";
+        alert(`Failed to create challenge: ${message}`);
+      } else {
+        // Handle other types of errors
+        console.error("Error creating challenge:", error);
+        alert("An error occurred while creating the challenge. Please try again.");
+      }
     }
   };
 
   return (
     <div className="w-full flex justify-center mx-auto my-6 items-center min-h-screen">
       <div className="bg-white py-8 px-3 lg:px-8 md:px-5 rounded-xl border w-full lg:w-3/5 md:w-4/5">
-        <h1 className="text-2xl font-bold text-center mb-4">Create New Challenge</h1>
-        <p className="text-center text-gray-600 mb-8">Fill out these details to build your broadcast</p>
+        <h1 className="text-2xl font-bold text-center mb-4">
+          Create New Challenge
+        </h1>
+        <p className="text-center text-gray-600 mb-8">
+          Fill out these details to build your broadcast
+        </p>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="title" className="block text-md font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="title"
+              className="block text-md font-medium text-gray-700 mb-1"
+            >
               Challenge/Hackathon Title
             </label>
             <input
@@ -123,7 +171,10 @@ const CreateChallenge = () => {
 
           <div className="flex gap-4 mb-4">
             <div className="w-1/2">
-              <label htmlFor="deadline" className="block text-md font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="deadline"
+                className="block text-md font-medium text-gray-700 mb-1"
+              >
                 Deadline
               </label>
               <input
@@ -138,7 +189,10 @@ const CreateChallenge = () => {
               />
             </div>
             <div className="w-1/2">
-              <label htmlFor="duration" className="block text-md font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="duration"
+                className="block text-md font-medium text-gray-700 mb-1"
+              >
                 Duration (Days)
               </label>
               <input
@@ -153,7 +207,10 @@ const CreateChallenge = () => {
 
           <div className="flex gap-4 mb-4">
             <div className="w-1/2">
-              <label htmlFor="moneyPrize" className="block text-md font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="moneyPrize"
+                className="block text-md font-medium text-gray-700 mb-1"
+              >
                 Money Prize
               </label>
               <input
@@ -168,7 +225,10 @@ const CreateChallenge = () => {
               />
             </div>
             <div className="w-1/2">
-              <label htmlFor="contactEmail" className="block text-md font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="contactEmail"
+                className="block text-md font-medium text-gray-700 mb-1"
+              >
                 Contact Email
               </label>
               <input
@@ -185,24 +245,31 @@ const CreateChallenge = () => {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="projectDescription" className="block text-md font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="projectDescription"
+              className="block text-md font-medium text-gray-700 mb-1"
+            >
               Project Description
             </label>
             <textarea
               id="projectDescription"
               name="projectDescription"
-              value={formData.projectDescription}
-              onChange={handleChange}
+              value={formData.projectDescription[0] || ""} // Display first array item
+              onChange={(e) =>
+                handleTextareaArrayChange(e, "projectDescription")
+              }
               placeholder="Enter text here..."
               maxLength={250}
               className="w-full px-4 py-4 border border-[#D0D5DD] rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
               required
             />
-            <p className="text-sm text-gray-500">Keep this simple, up to 250 characters</p>
           </div>
 
           <div className="mb-4">
-            <label htmlFor="projectBrief" className="block text-md font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="projectBrief"
+              className="block text-md font-medium text-gray-700 mb-1"
+            >
               Project Brief
             </label>
             <textarea
@@ -215,18 +282,23 @@ const CreateChallenge = () => {
               className="w-full px-4 py-4 border border-[#D0D5DD] rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
               required
             />
-            <p className="text-sm text-[#667185]">Keep this simple, up to 50 characters</p>
+            <p className="text-sm text-[#667185]">
+              Keep this simple, up to 50 characters
+            </p>
           </div>
 
           <div className="mb-4">
-            <label htmlFor="deliverables" className="block text-md font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="deliverables"
+              className="block text-md font-medium text-gray-700 mb-1"
+            >
               Deliverables
             </label>
             <textarea
               id="deliverables"
               name="deliverables"
-              value={formData.deliverables}
-              onChange={handleChange}
+              value={formData.deliverables[0] || ""} // Display first array item
+              onChange={(e) => handleTextareaArrayChange(e, "deliverables")}
               placeholder="Enter text here..."
               className="w-full px-4 py-4 border border-[#D0D5DD] rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
               required
@@ -234,13 +306,16 @@ const CreateChallenge = () => {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="seniorityLevel" className="block text-md font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="seniorityLevel"
+              className="block text-md font-medium text-gray-700 mb-1"
+            >
               Seniority Level
             </label>
             <select
               id="seniorityLevel"
               name="seniorityLevel"
-              value={formData.seniorityLevel}
+              value={formData.seniorityLevel[0]} 
               onChange={handleChange}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
               required
@@ -252,7 +327,10 @@ const CreateChallenge = () => {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="category" className="block text-md font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="category"
+              className="block text-md font-medium text-gray-700 mb-1"
+            >
               Category
             </label>
             <select
@@ -264,14 +342,17 @@ const CreateChallenge = () => {
               required
             >
               <option value="design">Design</option>
-              <option value="frontend">Frontend</option>
+              <option value="fronted">Frontend</option>
               <option value="backend">Backend</option>
               <option value="fullstack">Fullstack</option>
             </select>
           </div>
 
           <div className="mb-4">
-            <label htmlFor="projectRequirements" className="block text-md font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="projectRequirements"
+              className="block text-md font-medium text-gray-700 mb-1"
+            >
               Project Requirements
             </label>
             <input
@@ -283,11 +364,16 @@ const CreateChallenge = () => {
             />
             <ul className="mt-2 space-y-2">
               {formData.projectRequirements.map((req, index) => (
-                <li key={index} className="flex justify-between items-center p-2 bg-gray-50 rounded">
+                <li
+                  key={index}
+                  className="flex justify-between items-center p-2 bg-gray-50 rounded"
+                >
                   <span>{req}</span>
                   <button
                     type="button"
-                    onClick={() => handleRemoveArrayItem(index, "projectRequirements")}
+                    onClick={() =>
+                      handleRemoveArrayItem(index, "projectRequirements")
+                    }
                     className="text-red-500 hover:text-red-700"
                   >
                     Remove
@@ -298,7 +384,10 @@ const CreateChallenge = () => {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="skillsNeeded" className="block text-md font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="skillsNeeded"
+              className="block text-md font-medium text-gray-700 mb-1"
+            >
               Skills Needed
             </label>
             <input
@@ -310,7 +399,10 @@ const CreateChallenge = () => {
             />
             <ul className="mt-2 space-y-2">
               {formData.skillsNeeded.map((skill, index) => (
-                <li key={index} className="flex justify-between items-center p-2 bg-gray-50 rounded">
+                <li
+                  key={index}
+                  className="flex justify-between items-center p-2 bg-gray-50 rounded"
+                >
                   <span>{skill}</span>
                   <button
                     type="button"
