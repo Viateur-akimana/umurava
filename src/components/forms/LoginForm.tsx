@@ -23,7 +23,7 @@ const LoginForm: React.FC = () => {
     setFormData({ ...formData, [name]: value });
   };
  
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {    
     e.preventDefault();
   
     try {
@@ -33,8 +33,9 @@ const LoginForm: React.FC = () => {
       );
       
       if (response.status === 200) {
-        const token = response.data.data;
-        const isAdmin = adminEmails.includes(formData.email); 
+        const token = response.data.data.token;
+        
+        const isAdmin = response.data.data.isAdmin;
         localStorage.setItem("token", token);
         localStorage.setItem("isAdmin", JSON.stringify(isAdmin));
         
