@@ -14,6 +14,7 @@ const LoginForm: React.FC = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const adminEmails = ["user586@example.com", "superadmin@example.com"];
 
   const router = useRouter();
 
@@ -34,9 +35,10 @@ const LoginForm: React.FC = () => {
       if (response.status === 200) {
         const token = response.data.data.token;
         
-        const isAdmin = response.data.data.isAdmin; 
+        const isAdmin = response.data.data.isAdmin;
         localStorage.setItem("token", token);
         localStorage.setItem("isAdmin", JSON.stringify(isAdmin));
+        
         if (isAdmin) {
           router.push("/admin");
         } else {
