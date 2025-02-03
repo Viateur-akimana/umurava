@@ -16,6 +16,7 @@ interface ChallengeDetailsCardProps {
   prize: string;
 }
 
+
 const ChallengeDetailsCard: React.FC<ChallengeDetailsCardProps> = ({
   title,
   projectBrief,
@@ -48,22 +49,35 @@ const ChallengeDetailsCard: React.FC<ChallengeDetailsCardProps> = ({
         <h1 className="font-bold text-xl mb-2 text-black">Tasks: </h1>
         <h2 className="font-semibold text-black mb-4">Product Requirements</h2>
         <ul className="list-disc pl-6 mb-6 text-[#475367]">
-          {productRequirements.map((requirement, index) => (
-            <li key={index}>{requirement}</li>
-          ))}
-        </ul>
+  {productRequirements && productRequirements.length > 0 ? (
+    productRequirements.map((requirement, index) => (
+      <li key={index}>{requirement}</li>
+    ))
+  ) : (
+    <li>No product requirements available.</li>
+  )}
+</ul>
+
         <h2 className="font-semibold text-black mb-4">Product Design:</h2>
         <ul className="list-disc pl-6 mb-6 text-[#475367]">
-          {productDesigns.map((design, index) => (
-            <li key={index}>{design}</li>
-          ))}
+          {productDesigns && productDesigns.length > 0 ? (
+            productDesigns.map((design, index) => (
+              <li key={index}>{design}</li>
+            ))
+          ) : (
+            <li>No product designs available.</li>
+          )}
         </ul>
 
         <h2 className="font-semibold mb-4">Deliverables:</h2>
         <ul className="list-disc pl-6 mb-6 text-[#475367]">
-          {deliverables.map((deliverable, index) => (
-            <li key={index}>{deliverable}</li>
-          ))}
+          {deliverables && deliverables.length > 0 ? (
+            deliverables.map((deliverable, index) => (
+              <li key={index}>{deliverable}</li>
+            ))
+          ) : (
+            <li>No deliverables available.</li>
+          )}
         </ul>
       </div>
       <div>

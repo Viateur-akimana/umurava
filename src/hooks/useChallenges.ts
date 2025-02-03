@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prefer-const */
 import { useEffect, useState } from "react";
-import { Challengee, deleteChallenge, getAllChallenges, getChallengeById, updateChallenge } from "@/services/challengesService";
+import { Challengee, deleteChallenge, getAllChallenges, getChallengeById, updateChallenge,createChallenge } from "@/services/challengesService";
 import { useRouter } from "next/navigation";
 
 export const useChallenges = (
@@ -75,19 +75,40 @@ export const useChallenges = (
     return { challenges, setChallenges, challengeCounts, loading, error, page, totalPages, setPage };
 };
 
+export const useCreateChallenge = () => {
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [success, setSuccess] = useState(false);
 
+    const handleCreateChallenge = async (challengeData: Partial<Challengee>) => {
+        setLoading(true);
+        setError(null);
+        setSuccess(false);
+
+        try {
+            await createChallenge(challengeData);
+            setSuccess(true);
+        } catch (err) {
+            setError(err instanceof Error ? err.message : "Failed to create challenge");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return { handleCreateChallenge, loading, error, success };
+};
 export const useChallengeById = (id: string) => {
     const [challenge, setChallenge] = useState<Challengee | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
+    useEffect(() => { 
         const fetchChallenge = async () => {
             setLoading(true);
             setError(null);
 
             try {
-                const data = await getChallengeById(id); // Fetch the challenge using its ID
+                const data = await getChallengeById(id); 
 
                 if (data) {
                     const today = new Date();
@@ -124,13 +145,13 @@ export const useUpdateChallenge = () => {
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState(false);
   
-    const handleUpdateChallenge = async (challengeId: string, challengeData: object, token: string) => {
+    const handleUpdateChallenge = async (challengeId: string, challengeData: object) => {
       setLoading(true);
       setError(null);
       setSuccess(false);
   
       try {
-        await updateChallenge(challengeId, challengeData, token);
+        await updateChallenge(challengeId, challengeData);
         setSuccess(true);
       } catch (err) {
         setError(typeof err === "string" ? err : "Failed to update challenge");

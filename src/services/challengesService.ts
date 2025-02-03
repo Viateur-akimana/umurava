@@ -1,4 +1,8 @@
-import apiClient from "@/lib/utils/apiClient";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import  apiClient  from "@/lib/utils/apiClient";
+import { getAuthHeaders } from "@/lib/utils/helpers";
+import axios from "axios";
+import { toast } from 'react-toastify';
 
 export interface Challengee {
     _id: string;
@@ -33,13 +37,13 @@ export interface ChallengesResponse {
     pagination: Pagination;
 }
 
+
 export const getAllChallenges = async (status?: "open" | "ongoing" | "completed", page: number = 1, limit: number = 6) => {
     try {
         const params: Record<string, string | number> = { page, limit };
         if (status) params.status = status;
 
         const response = await apiClient.get<ChallengesResponse>("/challenges", { params });
-        // console.log("Data", response.data);
         return response.data;
     } catch (error) {
         console.error("Error fetching challenges:", error);
@@ -47,64 +51,69 @@ export const getAllChallenges = async (status?: "open" | "ongoing" | "completed"
     }
 };
 
+export const createChallenge = async (challengeData: Partial<Challengee>): Promise<Challengee> => {
+    try {
+        const headers = getAuthHeaders();
+        if (!headers.Authorization) {
+            toast.error("Please login to create a challenge");
+            throw new Error("Authentication required");
+        }
+
+        const response = await apiClient.post("/challenges", challengeData, {
+            headers
+        });
+        return response.data;
+    } catch (error: any) {
+        if (axios.isAxiosError(error)) {
+            const { data, status } = error.response || {};
+
+            if (status === 400) {
+                toast.error("Bad request: Please check your input data.");
+            } else if (status === 401) {
+                toast.error("Unauthorized: Your session has expired. Please log in again.");
+            } else if (status === 500) {
+                toast.error("Server error: Something went wrong. Please try again later.");
+            } else {
+                toast.error(`Unexpected error: ${data?.message || "Please try again later."}`);
+            }
+        } else if (error.request) {
+            toast.error("No response from server: Please check your internet connection.");
+        } else {
+            toast.error(`Error: ${error.message || "An unknown error occurred"}`);
+        }
+
+        throw error;
+    }
+};
 export const getChallengeById = async (id: string): Promise<Challengee> => {
     try {
-        // Retrieve the token from localStorage
-        const token = localStorage.getItem("token");
-        // console.log("Token got in services: ", token);
-
-
-        // Include the token in the Authorization header
         const response = await apiClient.get(`/challenges/${id}`, {
-            headers: {
-                Authorization: `Bearer ${token}`, // Set the Authorization header with the token
-            },
+            headers: getAuthHeaders(),
         });
 
-        return response.data.data;
+        return response.data;
     } catch (error) {
         console.error("Error fetching challenge:", error);
         throw error;
     }
 };
 
-
-export const updateChallenge = async (challengeId: string, challengeData: object, token: string) => {
+export const updateChallenge = async (challengeId: string, challengeData: Partial<Challengee>) => {
     try {
-        const token = localStorage.getItem("token"); // Retrieve token from localStorage
-
-        if (!token) {
-            throw new Error("No authentication token found");
-        }
-        
         const response = await apiClient.put(`/challenges/${challengeId}`, challengeData, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
+            headers: getAuthHeaders(),
         });
         return response.data;
     } catch (error) {
         console.error("Error updating challenge:", error);
-        console.log("error while updating ", error);
-        
         throw error;
     }
 };
 
-
-
 export const deleteChallenge = async (challengeId: string): Promise<void> => {
     try {
-        const token = localStorage.getItem("token"); // Retrieve token from localStorage
-
-        if (!token) {
-            throw new Error("No authentication token found");
-        }
-
         await apiClient.delete(`/challenges/${challengeId}`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
+            headers: getAuthHeaders(),
         });
     } catch (error) {
         console.error("Error deleting challenge:", error);

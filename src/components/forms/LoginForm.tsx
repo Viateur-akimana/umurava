@@ -14,7 +14,6 @@ const LoginForm: React.FC = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const adminEmails = ["user586@example.com", "superadmin@example.com"];
 
   const router = useRouter();
 
