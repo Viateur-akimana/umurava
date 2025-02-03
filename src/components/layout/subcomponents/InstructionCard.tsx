@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { useDeleteChallenge } from "@/hooks/useChallenges";
 import { Challenge } from "@/types/challenge";
 import { InstructionCardProps } from "@/types/instructions";
-import { Calendar,Mail,CircleDollarSign,Globe } from 'lucide-react';
-import { usePathname,useRouter } from "next/navigation";
+import { Calendar, Mail, CircleDollarSign, Globe } from 'lucide-react';
+import { useParams, usePathname, useRouter } from "next/navigation";
 
 interface CombinedProps extends InstructionCardProps {
   challenge?: Challenge;
@@ -18,6 +20,10 @@ export default function InstructionCard({
   const router = useRouter()
   const isAdmin = pathname.startsWith("/admin");
   const isTalent = pathname.startsWith("/talent");
+
+  const { id: challengeId } = useParams(); // Get challengeId from URL
+  const { handleDelete, isLoading } = useDeleteChallenge();
+
   const handleChallengeClick = (id: string) => {
     router.push(`/admin/challenges/${id}/edit`);
   };
@@ -64,19 +70,26 @@ export default function InstructionCard({
         </div>
       </div>
       {isTalent && (
-      <button className="w-full bg-blue-500 text-white text-sm font-medium py-2 rounded-lg hover:bg-blue-600 transition">
-        Submit your work
-      </button>
+        <button className="w-full bg-blue-500 text-white text-sm font-medium py-2 rounded-lg hover:bg-blue-600 transition">
+          Submit your work
+        </button>
       )}
-      {isAdmin && ( 
+      {isAdmin && (
         <div className="flex gap-6">
-                <button className="bg-[#E5533C] hover:bg-red-700 duration-500 rounded-lg py-2 text-white text-lg font-semibold w-[50%]">
-                  Delete
-                </button>
-                <button onClick={() => challenge && handleChallengeClick(challenge._id)} className="bg-[#2B71F0] hover:bg-blue-700 duration-500 rounded-lg py-2 text-white text-lg font-semibold w-[50%]">
-                  Edit
-                </button>
-              </div>
+          {/* <button className="bg-[#E5533C] hover:bg-red-700 duration-500 rounded-lg py-2 text-white text-lg font-semibold w-[50%]">
+            Delete
+          </button> */}
+          <button
+            onClick={() => handleDelete(challengeId)}
+            disabled={isLoading}
+            className="bg-[#E5533C] hover:bg-red-700 duration-500 rounded-lg py-2 text-white text-lg font-semibold w-[50%]"
+          >
+            {isLoading ? "Deleting..." : "Delete"}
+          </button>
+          <button onClick={() => handleChallengeClick(challengeId)} className="bg-[#2B71F0] hover:bg-blue-700 duration-500 rounded-lg py-2 text-white text-lg font-semibold w-[50%]">
+            Edit
+          </button>
+        </div>
       )}
     </div>
   );

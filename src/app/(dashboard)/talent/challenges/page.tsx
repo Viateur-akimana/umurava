@@ -198,7 +198,7 @@ const ChallengePage = () => {
           <ChallengeCard key={index} challenge={challenge} />
         ))}
       </div> */}
-       {loading ? (
+      {loading ? (
         <div>Loading challenges...</div>
       ) : challenges.length === 0 ? (
         <div>No challenges available</div>

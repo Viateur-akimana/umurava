@@ -31,8 +31,8 @@ const ChallengeDetailsCard: React.FC<ChallengeDetailsCardProps> = ({
 
   const isAdmin = pathname.startsWith("/admin");
   return (
-    <div className="flex flex-col lg:flex-row md:flex-row gap-8 pt-8 px-2 lg:px-8 md:px-5 ">
-      <div className="bg-white rounded-xl p-2 lg:p-8 md:p-3 max-w-2xl border border-[#E4E7EC]">
+    <div className="w-full flex flex-col lg:flex-row gap-8 py-8 px-2 lg:px-8 md:px-5 ">
+      <div className="lg:w-3/5 bg-white rounded-xl p-2 lg:p-8 md:p-3 border border-[#E4E7EC]">
         <div className="bg-[#2B71F0] h-80 w-512 mb-4 flex items-center justify-center rounded-md ">
           <Image
             src="/umurva.png"

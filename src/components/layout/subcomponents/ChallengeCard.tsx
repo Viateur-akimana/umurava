@@ -3,12 +3,16 @@ import { ChallengeCardProps } from "@/types/challenge";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
+interface ChallengeCardComponentProps extends ChallengeCardProps {
+  isAdmin?: boolean; 
+}
 
-export const ChallengeCard: React.FC<ChallengeCardProps> = ({ challenge }) => {
+export const ChallengeCard: React.FC<ChallengeCardComponentProps> = ({ challenge, isAdmin = false }) => {
   const router = useRouter();
 
   const handleChallengeClick = (id: string) => {
-    router.push(`/talent/challenges/${id}`);
+    const role = isAdmin ? "admin" : "talent";
+    router.push(`/${role}/challenges/${id}`);
   };
 
   return (
@@ -20,7 +24,6 @@ export const ChallengeCard: React.FC<ChallengeCardProps> = ({ challenge }) => {
                       flex items-center justify-center rounded-md 
                       transition-transform group-hover:scale-105 duration-300">
           <Image
-            // src={challenge.companyLogo}
             src="/umurva.png"
             alt="Company Logo"
             width={180}

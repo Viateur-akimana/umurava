@@ -33,13 +33,13 @@ export interface ChallengesResponse {
     pagination: Pagination;
 }
 
-export const getAllChallenges = async (status?: "open" | "ongoing" | "completed", page: number = 5, limit: number = 6) => {
+export const getAllChallenges = async (status?: "open" | "ongoing" | "completed", page: number = 1, limit: number = 6) => {
     try {
         const params: Record<string, string | number> = { page, limit };
         if (status) params.status = status;
 
         const response = await apiClient.get<ChallengesResponse>("/challenges", { params });
-        console.log("Data", response.data);
+        // console.log("Data", response.data);
         return response.data;
     } catch (error) {
         console.error("Error fetching challenges:", error);
@@ -51,6 +51,8 @@ export const getChallengeById = async (id: string): Promise<Challengee> => {
     try {
         // Retrieve the token from localStorage
         const token = localStorage.getItem("token");
+        // console.log("Token got in services: ", token);
+
 
         // Include the token in the Authorization header
         const response = await apiClient.get(`/challenges/${id}`, {
@@ -62,6 +64,50 @@ export const getChallengeById = async (id: string): Promise<Challengee> => {
         return response.data.data;
     } catch (error) {
         console.error("Error fetching challenge:", error);
+        throw error;
+    }
+};
+
+
+export const updateChallenge = async (challengeId: string, challengeData: object, token: string) => {
+    try {
+        const token = localStorage.getItem("token"); // Retrieve token from localStorage
+
+        if (!token) {
+            throw new Error("No authentication token found");
+        }
+        
+        const response = await apiClient.put(`/challenges/${challengeId}`, challengeData, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error updating challenge:", error);
+        console.log("error while updating ", error);
+        
+        throw error;
+    }
+};
+
+
+
+export const deleteChallenge = async (challengeId: string): Promise<void> => {
+    try {
+        const token = localStorage.getItem("token"); // Retrieve token from localStorage
+
+        if (!token) {
+            throw new Error("No authentication token found");
+        }
+
+        await apiClient.delete(`/challenges/${challengeId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+    } catch (error) {
+        console.error("Error deleting challenge:", error);
         throw error;
     }
 };

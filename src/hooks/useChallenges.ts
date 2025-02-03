@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prefer-const */
 import { useEffect, useState } from "react";
-import { Challengee, getAllChallenges, getChallengeById } from "@/services/challengesService";
+import { Challengee, deleteChallenge, getAllChallenges, getChallengeById, updateChallenge } from "@/services/challengesService";
+import { useRouter } from "next/navigation";
 
 export const useChallenges = (
     status?: "open" | "ongoing" | "completed",
@@ -91,14 +92,14 @@ export const useChallengeById = (id: string) => {
                 if (data) {
                     const today = new Date();
                     const deadline = new Date(data.deadline);
-                    
+
                     let remainingDays = Math.ceil(
                         (deadline.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
                     );
 
                     // Ensure the remaining days never go below 0
                     remainingDays = Math.max(remainingDays, 0);
-                    
+
                     setChallenge({ ...data, timeline: `${remainingDays} Days` });
                     return;
                 }
@@ -115,4 +116,57 @@ export const useChallengeById = (id: string) => {
     }, [id]); // Re-run the fetch when the id changes
 
     return { challenge, loading, error };
+};
+
+
+export const useUpdateChallenge = () => {
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [success, setSuccess] = useState(false);
+  
+    const handleUpdateChallenge = async (challengeId: string, challengeData: object, token: string) => {
+      setLoading(true);
+      setError(null);
+      setSuccess(false);
+  
+      try {
+        await updateChallenge(challengeId, challengeData, token);
+        setSuccess(true);
+      } catch (err) {
+        setError(typeof err === "string" ? err : "Failed to update challenge");
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    return { handleUpdateChallenge, loading, error, success };
+  };
+
+
+export const useDeleteChallenge = () => {
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const router = useRouter();
+
+    const handleDelete = async (challengeId: string, onSuccess?: () => void) => {
+        setIsLoading(true);
+        setError(null);
+
+        try {
+            await deleteChallenge(challengeId);
+            alert("Challenge deleted successfully!"); // Show success alert
+            router.push("/admin/challenges");
+            if (onSuccess) onSuccess(); // Optional callback for success handling
+        } catch (err) {
+            if (err instanceof Error) {
+                setError(err.message || "Failed to delete challenge");
+            } else {
+                setError("Failed to delete challenge");
+            }
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    return { handleDelete, isLoading, error };
 };

@@ -1,44 +1,20 @@
-import React from "react";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+"use client"
+
+import React, { useState } from "react";
 import Image from "next/image";
 import { Challenge } from "@/types/challenge";
 import { AdminStatsCard } from "@/components/layout/subcomponents/AdminStatsCard";
-
-
+import { useAdminStats } from "@/hooks/useAdminStats";
+import { useChallenges } from "@/hooks/useChallenges";
+import { useRouter } from "next/navigation";
 
 
 const Dashboard: React.FC = () => {
-  const challenges: Challenge[] = [
-    {
-      id: 1,
-      title: "Design a Dashboard for SokoFund, Fintech Product",
-      description: "Create a functional dashboard for a fintech product.",
-      status: "Open",
-      skillsNeeded: ["UI/UX Design", "User Research", "User Research"],
-      timeline: "15 Days",
-      seniorityLevel: "(Junior, Intermediate, Senior)",
-      companyLogo: "/umurva.png",
-    },
-    {
-      id: 2,
-      title: "Design a Dashboard for SokoFund for a Fintech Product",
-      description: "Build an app to track user health metrics.",
-      status: "Open",
-      skillsNeeded: ["UI/UX Design", "User Research", "User Research"],
-      timeline: "15 Days",
-      seniorityLevel: "(Junior, Intermediate, Senior)",
-      companyLogo: "/umurva.png",
-    },
-    {
-      id: 3,
-      title: "Design a Dashboard for SokoFund for a Fintech Product",
-      description: "Build an app to track user health metrics.",
-      status: "Open",
-      skillsNeeded: ["UI/UX Design", "User Research", "User Research"],
-      timeline: "15 Days",
-      seniorityLevel: "(Junior, Intermediate, Senior)",
-      companyLogo: "/umurva.png",
-    },
-  ];
+  const [filter, setFilter] = useState("this_week");
+  const { stats } = useAdminStats(filter);
+  const [selectedStatus, setSelectedStatus] = useState<"open" | "ongoing" | "completed" | undefined>(undefined);
+  const { challenges, loading } = useChallenges(selectedStatus);
 
   return (
     <div className="flex-1 px-6 py-3">
@@ -51,24 +27,60 @@ const Dashboard: React.FC = () => {
         </div>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 md:grid-cols-2 gap-6 mb-8">
-        <AdminStatsCard title="Completed Challenges" count={4} rate={75} />
-        <AdminStatsCard title="Open Challenges" count={200} rate={20} />
+        <AdminStatsCard
+          title="All Challenges"
+          count={stats?.totalChallenges?.current || 0}
+          rate={stats?.totalChallenges?.changePercent || 0}
+          filter={filter}
+          onFilterChange={setFilter}
+        />
+        <AdminStatsCard
+          title="All Participants"
+          count={stats?.totalParticipants?.current || 0}
+          rate={stats?.totalParticipants?.changePercent || 0}
+          filter={filter}
+          onFilterChange={setFilter}
+        />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        <AdminStatsCard title="Completed Challenges" count={4} rate={75} />
-        <AdminStatsCard title="Open Challenges" count={200} rate={20} />
-        <AdminStatsCard title="Ongoing Challenges" count={15} rate={10} />
+        <AdminStatsCard
+          title="Completed Challenges"
+          count={stats?.completedChallenges?.current || 0}
+          rate={stats?.completedChallenges?.changePercent || 0}
+          filter={filter}
+          onFilterChange={setFilter}
+        />
+        <AdminStatsCard
+          title="Open Challenges"
+          count={stats?.openChallenges?.current || 0}
+          rate={stats?.openChallenges?.changePercent || 0}
+          filter={filter}
+          onFilterChange={setFilter}
+        />
+        <AdminStatsCard
+          title="Ongoing Challenges"
+          count={stats?.onGoingChallenges?.current || 0}
+          rate={stats?.onGoingChallenges?.changePercent || 0}
+          filter={filter}
+          onFilterChange={setFilter}
+        />
       </div>
       <div className="mb-6 flex justify-between items-center">
         <h2 className="text-xl text-[#101928] font-semibold">Recent Challenges</h2>
         <button className="text-blue-500">See all →</button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {challenges.map((challenge, index) => (
-          <ChallengeCard key={index} challenge={challenge} />
-        ))}
-      </div>
+      {loading ? (
+        <div>Loading challenges...</div>
+      ) : challenges.length === 0 ? (
+        <div>No challenges available</div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
+          {challenges.map((challenge, index) => (
+            <ChallengeCard key={index} challenge={challenge} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
@@ -79,57 +91,96 @@ interface ChallengeCardProps {
   challenge: Challenge;
 }
 
-const ChallengeCard: React.FC<ChallengeCardProps> = ({ challenge }) => (
-  <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-    <div className="relative">
-      <div className="bg-blue-500 h-40 flex items-center justify-center">
-        <Image
-          src={challenge.companyLogo}
-          alt="Company Logo"
-          width={200}
-          height={60}
-          className="object-contain"
-        />
+const ChallengeCard: React.FC<ChallengeCardProps> = ({ challenge }) => {
+  const router = useRouter();
+
+  const handleChallengeClick = (id: string) => {
+    router.push(`/admin/challenges/${id}`);
+  };
+
+  return (
+    <div
+      className="bg-white rounded-lg shadow-sm overflow-hidden w-full 
+                 sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto
+                 hover:shadow-md transition-shadow duration-300"
+    >
+      <div className="relative">
+        <div
+          className="bg-[#2B71F0] m-3 sm:m-5 h-32 sm:h-40 
+                     flex items-center justify-center rounded-md 
+                     transition-transform group-hover:scale-105 duration-300"
+        >
+          <Image
+            src="/umurva.png"
+            alt="Company Logo"
+            width={180}
+            height={60}
+            className="w-36 sm:w-48 md:w-56 h-auto object-contain"
+          />
+        </div>
+        <span
+          className="absolute top-4 right-4 sm:right-7 
+                     bg-[#0F973D] text-white text-xs sm:text-sm 
+                     px-2 sm:px-3 py-1 rounded-full"
+        >
+          {challenge.status}
+        </span>
       </div>
-      <span className="absolute top-4 right-4 bg-green-500 text-white text-sm px-3 py-1 rounded-full">
-        {challenge.status}
-      </span>
-    </div>
-    {/* content section */}
-    <div className="p-6 space-y-4">
-      <h3 className="font-semibold mb-4 text-lg">{challenge.title}</h3>
-      {/* skills section */}
-      <div>
-        <p className="text-sm text-gray-600 mb-2">Skills Needed:</p>
-        <div className="flex flex-row overflow-x-scroll scrollbar-hidden">
-          {challenge.skillsNeeded.map((skill, index) => (
-            <span
-              key={index}
-              className="px-3 py-1 bg-blue-50 text-blue-500 rounded-full text-[10px] whitespace-nowrap"
-            >
-              {skill}
+
+      <div className="p-4 sm:p-6 space-y-3 sm:space-y-4">
+        <h3
+          className="font-semibold text-base sm:text-lg text-[#101928] 
+                     line-clamp-2"
+        >
+          {challenge.title}
+        </h3>
+
+        <div>
+          <p className="text-xs sm:text-sm text-[#25272B] mb-2">
+            Skills Needed:
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {challenge.skillsNeeded.map((skill, index) => (
+              <span
+                key={index}
+                className="px-2 sm:px-3 py-1 border border-[#2B71F0] 
+                           text-[#2B71F0] rounded-md text-xs sm:text-sm
+                           whitespace-nowrap"
+              >
+                {skill}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <p className="text-sm text-[#171717] flex flex-wrap items-center">
+            Seniority Level:{" "}
+            <span className="text-[#475367] ml-1">
+              {challenge.seniorityLevel}
             </span>
-          ))}
+          </p>
+          <p className="text-sm text-[#171717] flex flex-wrap items-center">
+            Timeline:{" "}
+            <span className="text-[#475367] ml-1">{challenge.timeline}</span>
+          </p>
+        </div>
+
+        <hr className="border-[#E4E7EC]" />
+
+        <div className="flex justify-center sm:justify-start pt-2">
+          <button
+            onClick={() => handleChallengeClick(challenge._id)}
+            className="w-full sm:w-1/2 bg-[#2B71F0] text-white py-2 
+                       rounded-lg hover:bg-blue-600 transition 
+                       text-sm sm:text-base font-medium"
+          >
+            View Challenge
+          </button>
         </div>
       </div>
-      <div className="mb-4">
-        <p className="text-sm text-gray-600">
-          Seniority Level:{" "}
-          <span className="text-gray-400">{challenge.seniorityLevel}</span>
-        </p>
-      </div>
-
-      <div className="mb-4">
-        <p className="text-sm text-gray-600">
-          Timeline: <span>{challenge.timeline}</span>
-        </p>
-      </div>
-
-      <button className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition">
-        View Challenge
-      </button>
     </div>
-  </div>
-);
+  );
+};
 
 export default Dashboard;
