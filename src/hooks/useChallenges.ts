@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Challengee, deleteChallenge, getAllChallenges, getChallengeById, updateChallenge,createChallenge } from "@/services/challengesService";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 export const useChallenges = (
     status?: "open" | "ongoing" | "completed",
@@ -90,6 +91,7 @@ export const useCreateChallenge = () => {
 
         try {
             await createChallenge(challengeData);
+            toast.success("Challenge created successfully!");
             setSuccess(true);
         } catch (err) {
             setError(err instanceof Error ? err.message : "Failed to create challenge");
@@ -156,6 +158,7 @@ export const useUpdateChallenge = () => {
       try {
         await updateChallenge(challengeId, challengeData);
         setSuccess(true);
+        toast.success("Challenge updated successfully!");
       } catch (err) {
         setError(typeof err === "string" ? err : "Failed to update challenge");
       } finally {
@@ -178,7 +181,7 @@ export const useDeleteChallenge = () => {
 
         try {
             await deleteChallenge(challengeId);
-            alert("Challenge deleted successfully!"); // Show success alert
+            toast.success("Challenge deleted successfully!");
             router.push("/admin/challenges");
             if (onSuccess) onSuccess(); // Optional callback for success handling
         } catch (err) {

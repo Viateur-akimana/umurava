@@ -48,7 +48,7 @@ const NavBar = () => {
           </Link>
         </div>
         <div className="hidden lg:flex items-center">
-          <Link href="/join" className="block px-4 py-2 rounded-md text-white bg-[#041738] hover:bg-[#12274d] text-nowrap">
+          <Link href="/login" className="block px-4 py-2 rounded-md text-white bg-[#041738] hover:bg-[#12274d] text-nowrap">
             Join the Program
           </Link>
         </div>
@@ -80,7 +80,7 @@ const NavBar = () => {
             <Link href="/web/pages/contact" className={`block px-3 py-2 rounded-md font-semibold text-nowrap ${pathname === '/web/pages/contact' ? 'text-blue-600' : 'text-gray-600 hover:text-gray-900'}`}>
               Contact Us
             </Link>
-            <Link href="/join" className="block px-4 py-2 rounded-md text-white bg-[#041738] hover:bg-[#12274d]">
+            <Link href="/login" className="block px-4 py-2 rounded-md text-white bg-[#041738] hover:bg-[#12274d]">
               Join the Program
             </Link>
           </div>

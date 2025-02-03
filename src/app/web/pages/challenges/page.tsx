@@ -1,81 +1,30 @@
-"use client"
+/* eslint-disable @typescript-eslint/no-unused-vars */
+"use client";
 
 import React, { useState } from "react";
 import { ChallengeCard } from "@/components/layout/subcomponents/ChallengeCard";
-import { Challenge } from "@/types/challenge";
+import { useChallenges } from "@/hooks/useChallenges";
+import { useRouter } from "next/navigation";
 
-const challenges: Challenge[] = [
-  {
-    id: 1,
-    title: "Design a Dashboard for SokoFund, Fintech Product",
-    description: "Create a functional dashboard for a fintech product.",
-    status: "Open",
-    skillsNeeded: ["UI/UX Design", "User Research"],
-    timeline: "15 Days",
-    seniorityLevel: "(Junior, Intermediate, Senior)",
-    companyLogo: "/umurva.png",
-  },
-  {
-    id: 2,
-    title: "Design a Dashboard for SokoFund for a Fintech Product",
-    description: "Build an app to track user health metrics.",
-    status: "Open",
-    skillsNeeded: ["UI/UX Design", "User Research"],
-    timeline: "15 Days",
-    seniorityLevel: "(Junior, Intermediate, Senior)",
-    companyLogo: "/umurva.png",
-  },
-  {
-    id: 3,
-    title: "Design a Dashboard for SokoFund for a Fintech Product",
-    description: "Build an app to track user health metrics.",
-    status: "Open",
-    skillsNeeded: ["UI/UX Design", "User Research"],
-    timeline: "15 Days",
-    seniorityLevel: "(Junior, Intermediate, Senior)",
-    companyLogo: "/umurva.png",
-  },
-  {
-    id: 4,
-    title: "Design a Dashboard for SokoFund, Fintech Product",
-    description: "Create a functional dashboard for a fintech product.",
-    status: "Open",
-    skillsNeeded: ["UI/UX Design", "User Research"],
-    timeline: "15 Days",
-    seniorityLevel: "(Junior, Intermediate, Senior)",
-    companyLogo: "/umurva.png",
-  },
-  {
-    id: 5,
-    title: "Design a Dashboard for SokoFund for a Fintech Product",
-    description: "Build an app to track user health metrics.",
-    status: "Open",
-    skillsNeeded: ["UI/UX Design", "User Research"],
-    timeline: "15 Days",
-    seniorityLevel: "(Junior, Intermediate, Senior)",
-    companyLogo: "/umurva.png",
-  },
-  {
-    id: 6,
-    title: "Design a Dashboard for SokoFund for a Fintech Product",
-    description: "Build an app to track user health metrics.",
-    status: "Open",
-    skillsNeeded: ["UI/UX Design", "User Research"],
-    timeline: "15 Days",
-    seniorityLevel: "(Junior, Intermediate, Senior)",
-    companyLogo: "/umurva.png",
-  },
-];
+interface ChallengesProps {
+  isHomePage?: boolean; // Prop to determine if the component is on the homepage
+}
 
-const Challenges: React.FC = () => {
-  const [visibleCount, setVisibleCount] = useState(3);
+const Challenges: React.FC<ChallengesProps> = ({ isHomePage = false }) => {
+  const [selectedStatus, setSelectedStatus] = useState<"open" | "ongoing" | "completed" | undefined>(undefined);
+  const { challenges, loading, page, totalPages, setPage } = useChallenges(selectedStatus);
+  const router = useRouter();
 
   const handleViewMore = () => {
-    setVisibleCount((prevCount) => prevCount + 3);
+    router.push("/web/pages/challenges");
+  };
+
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
   };
 
   return (
-    <div className="p-6 lg:px-28 lg:py-12 bg-[#F9FAFB]">
+    <div className="w-full p-6 lg:px-28 lg:py-12 bg-[#F9FAFB]">
       <h2 className="text-3xl font-bold text-center mb-6">
         Explore Challenges & Hackathons
       </h2>
@@ -83,12 +32,45 @@ const Challenges: React.FC = () => {
         Join Skills Challenges Program to accelerate your career growth and
         become part of Africa’s largest workforce of digital professionals.
       </p>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {challenges.slice(0, visibleCount).map((challenge) => (
-          <ChallengeCard key={challenge.id} challenge={challenge} />
-        ))}
-      </div>
-      {visibleCount < challenges.length && (
+
+      {loading ? (
+        <div className="w-full flex items-center justify-center">Loading challenges...</div>
+      ) : challenges.length === 0 ? (
+        <div className="w-full flex items-center justify-center">No challenges available</div>
+      ) : (
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
+            {challenges.map((challenge, index) => (
+              <ChallengeCard key={index} challenge={challenge} isAdmin={true} />
+            ))}
+          </div>
+
+          {/* Pagination Controls - Render only if NOT on homepage */}
+          {!isHomePage && (
+            <div className="flex justify-center mt-8">
+              <button
+                onClick={() => handlePageChange(page - 1)}
+                disabled={page === 1}
+                className="px-4 py-2 mx-1 border rounded-lg disabled:opacity-50"
+              >
+                Previous
+              </button>
+              <span className="px-4 py-2 mx-1">
+                Page {page} of {totalPages}
+              </span>
+              <button
+                onClick={() => handlePageChange(page + 1)}
+                disabled={page === totalPages}
+                className="px-4 py-2 mx-1 border rounded-lg disabled:opacity-50"
+              >
+                Next
+              </button>
+            </div>
+          )}
+        </>
+      )}
+
+      {isHomePage && (
         <div className="text-center mt-8">
           <button
             onClick={handleViewMore}

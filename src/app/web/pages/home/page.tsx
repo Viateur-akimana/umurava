@@ -16,7 +16,7 @@ export default function Home() {
       <Features/>
       <Stats/>
       <Skills/>
-      <Challenges/>
+      <Challenges isHomePage={true}/>
       <Benefits/>
       <UserChallenges />
       <Process/>

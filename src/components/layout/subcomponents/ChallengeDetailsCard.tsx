@@ -49,14 +49,14 @@ const ChallengeDetailsCard: React.FC<ChallengeDetailsCardProps> = ({
         <h1 className="font-bold text-xl mb-2 text-black">Tasks: </h1>
         <h2 className="font-semibold text-black mb-4">Product Requirements</h2>
         <ul className="list-disc pl-6 mb-6 text-[#475367]">
-  {productRequirements && productRequirements.length > 0 ? (
-    productRequirements.map((requirement, index) => (
-      <li key={index}>{requirement}</li>
-    ))
-  ) : (
-    <li>No product requirements available.</li>
-  )}
-</ul>
+          {productRequirements && productRequirements.length > 0 ? (
+            productRequirements.map((requirement, index) => (
+              <li key={index}>{requirement}</li>
+            ))
+          ) : (
+            <li>No product requirements available.</li>
+          )}
+        </ul>
 
         <h2 className="font-semibold text-black mb-4">Product Design:</h2>
         <ul className="list-disc pl-6 mb-6 text-[#475367]">
@@ -80,7 +80,7 @@ const ChallengeDetailsCard: React.FC<ChallengeDetailsCardProps> = ({
           )}
         </ul>
       </div>
-      <div>
+      <div className="flex flex-col xl:flex-col lg:flex-col md:flex-row gap-3">
         <InstructionCard
           contact={contactEmail}
           category={category}

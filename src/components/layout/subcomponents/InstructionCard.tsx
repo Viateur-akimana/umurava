@@ -28,7 +28,7 @@ export default function InstructionCard({
     router.push(`/admin/challenges/${id}/edit`);
   };
   return (
-    <div className="max-w-md mb-4 mx-auto bg-white  h-[480px] rounded-lg p-6 space-y-6 border border-[#E4E7EC]">
+    <div className="max-w-md mx-auto bg-white rounded-lg p-6 space-y-6 border border-[#E4E7EC]">
       <h2 className="text-xl  text-black font-bold">Key instructions:</h2>
       <p className="text-lg text-[#475367]">You are free to schedule the clarification call with the team via this</p>
       <div className="space-y-4">
