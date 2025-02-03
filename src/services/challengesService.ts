@@ -89,9 +89,9 @@ export const getChallengeById = async (id: string): Promise<Challengee> => {
     try {
         const response = await apiClient.get(`/challenges/${id}`, {
             headers: getAuthHeaders(),
-        });
+        });        
 
-        return response.data;
+        return response.data.data;
     } catch (error) {
         console.error("Error fetching challenge:", error);
         throw error;
