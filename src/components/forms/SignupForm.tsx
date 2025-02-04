@@ -1,8 +1,9 @@
 "use client"
-import Link from "next/link";
+
 import React, { useState } from "react";
-import { Eye } from 'lucide-react';
-import axios from 'axios';
+import { Eye } from "lucide-react";
+import Link from "next/link";
+import { useRegister } from "@/hooks/useAuth";
 
 const SignupForm: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -13,7 +14,7 @@ const SignupForm: React.FC = () => {
   });
 
   const [showPassword, setShowPassword] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const { isLoading, registerUser } = useRegister();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -22,25 +23,7 @@ const SignupForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    try {
-      const response = await axios.post(
-        "https://umurava-skill-challenge-backend.onrender.com/api/v1/auth/signup",
-        formData
-      );
-
-      // On successful signup, redirect to the login page
-      if (response.status === 200) {
-        window.location.href = "/login";
-      }
-    } catch (error: any) {
-      // Handle any errors from the API response
-      if (error.response) {
-        setErrorMessage(error.response.data.message || "An error occurred. Please try again.");
-      } else {
-        setErrorMessage("Network error. Please try again later.");
-      }
-    }
+    await registerUser(formData.firstName, formData.lastName, formData.email, formData.password);
   };
 
   return (
@@ -50,7 +33,6 @@ const SignupForm: React.FC = () => {
         className="w-full max-w-md p-6 bg-white rounded-lg shadow-md"
       >
         <h2 className="mb-4 text-2xl font-bold text-center">Create Account</h2>
-        {errorMessage && <p className="text-red-500 text-center mb-4">{errorMessage}</p>}
         <div className="mb-4">
           <label htmlFor="firstName" className="block text-sm font-medium">
             First name
@@ -119,8 +101,9 @@ const SignupForm: React.FC = () => {
         <button
           type="submit"
           className="w-full py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none"
+          disabled={isLoading} // Disable button while loading
         >
-          Create Account
+          {isLoading ? "Creating..." : "Create Account"}
         </button>
         <div className="mt-6 text-lg text-center">
           <p className="mt-2">

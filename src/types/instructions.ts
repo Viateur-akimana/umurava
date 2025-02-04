@@ -3,5 +3,6 @@ export interface InstructionCardProps {
     duration: string;
     prize: string;
     contact: string;
+    challengeId: string;
   };
   

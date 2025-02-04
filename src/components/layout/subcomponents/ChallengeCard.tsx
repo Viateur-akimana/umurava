@@ -4,13 +4,13 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 interface ChallengeCardComponentProps extends ChallengeCardProps {
-  isAdmin?: boolean; 
+  isAdmin?: boolean;
 }
 
 export const ChallengeCard: React.FC<ChallengeCardComponentProps> = ({ challenge, isAdmin = false }) => {
   const router = useRouter();
 
-  const handleChallengeClick = (id: string) => {
+  const handleChallengeClick = async (id: string) => {
     const role = isAdmin ? "admin" : "talent";
     router.push(`/${role}/challenges/${id}`);
   };

@@ -5,6 +5,7 @@ import Participants from "./Participants";
 import { usePathname } from "next/navigation"
 
 interface ChallengeDetailsCardProps {
+  challengeId: string;
   title: string;
   projectBrief: string;
   productRequirements: string[];
@@ -26,7 +27,8 @@ const ChallengeDetailsCard: React.FC<ChallengeDetailsCardProps> = ({
   contactEmail,
   category,
   timeline,
-  prize
+  prize,
+  challengeId
 }) => {
   const pathname = usePathname();
 
@@ -86,6 +88,7 @@ const ChallengeDetailsCard: React.FC<ChallengeDetailsCardProps> = ({
           category={category}
           duration={timeline}
           prize={prize}
+          challengeId={challengeId}
         />
         {isAdmin && (<Participants />)}
 
