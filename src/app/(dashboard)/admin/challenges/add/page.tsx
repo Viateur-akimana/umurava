@@ -20,11 +20,11 @@ const ChallengeDetailsPage: React.FC = () => {
         <span className="text-[#98A2B3]">Challenges & Hackathons</span>
         <span className="text-gray-400">/</span>
         <span className="text-[#2B71F0] hover:underline cursor-pointer">
-          Design a Dashboard for Sokofund
+          Create new challenge
         </span>
       </div>
 
-      <div className="flex mx-auto top-4 right-4">
+      <div className="mx-auto">
         <AddChallengeForm/>
       </div>
     </div>

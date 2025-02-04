@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Challengee, deleteChallenge, getAllChallenges, getChallengeById, updateChallenge,createChallenge } from "@/services/challengesService";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 export const useChallenges = (
     status?: "open" | "ongoing" | "completed",
@@ -28,7 +29,8 @@ export const useChallenges = (
             setError(null);
 
             try {
-                let data = await getAllChallenges(status, undefined, page);
+                // Fetch challenges with the current status, page, and limit (always 6)
+                let data = await getAllChallenges(status, page, 6);
 
                 setTotalPages(data.pagination.totalPages);
 
@@ -46,7 +48,9 @@ export const useChallenges = (
                 data.data = data.data.map((challenge) => {
                     const createdAt = new Date(challenge.createdAt);
                     const deadline = new Date(challenge.deadline);
-                    const timelineInDays = Math.ceil((deadline.getTime() - createdAt.getTime()) / (1000 * 60 * 60 * 24)); // Convert ms to days
+                    let timelineInDays = Math.ceil((deadline.getTime() - createdAt.getTime()) / (1000 * 60 * 60 * 24)); // Convert ms to days
+
+                    timelineInDays = Math.max(timelineInDays, 0)
 
                     return { ...challenge, timeline: `${timelineInDays} Days` };
                 });
@@ -55,7 +59,7 @@ export const useChallenges = (
 
                 // Compute counts for each challenge type
                 const counts = {
-                    all: data.data.length,
+                    all: data.pagination.totalChallenges, // Use totalChallenges from pagination
                     open: data.data.filter((ch) => ch.status === "open").length,
                     ongoing: data.data.filter((ch) => ch.status === "ongoing").length,
                     completed: data.data.filter((ch) => ch.status === "completed").length,
@@ -70,7 +74,7 @@ export const useChallenges = (
         };
 
         fetchChallenges();
-    }, [status, recent, page]);
+    }, [status, recent, page]); // Add `page` to dependencies
 
     return { challenges, setChallenges, challengeCounts, loading, error, page, totalPages, setPage };
 };
@@ -87,6 +91,7 @@ export const useCreateChallenge = () => {
 
         try {
             await createChallenge(challengeData);
+            toast.success("Challenge created successfully!");
             setSuccess(true);
         } catch (err) {
             setError(err instanceof Error ? err.message : "Failed to create challenge");
@@ -153,6 +158,7 @@ export const useUpdateChallenge = () => {
       try {
         await updateChallenge(challengeId, challengeData);
         setSuccess(true);
+        toast.success("Challenge updated successfully!");
       } catch (err) {
         setError(typeof err === "string" ? err : "Failed to update challenge");
       } finally {
@@ -175,7 +181,7 @@ export const useDeleteChallenge = () => {
 
         try {
             await deleteChallenge(challengeId);
-            alert("Challenge deleted successfully!"); // Show success alert
+            toast.success("Challenge deleted successfully!");
             router.push("/admin/challenges");
             if (onSuccess) onSuccess(); // Optional callback for success handling
         } catch (err) {

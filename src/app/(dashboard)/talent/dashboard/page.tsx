@@ -1,19 +1,19 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
 import React from "react";
 import { FaEye } from "react-icons/fa";
 import { ChallengeCard } from "@/components/layout/subcomponents/ChallengeCard"
-// import { Challenge } from "@/types/challenge";
 import { StatisticsCard } from "@/components/layout/subcomponents/StatisticsCard";
 import { useRouter } from "next/navigation";
 import { useChallenges } from "@/hooks/useChallenges";
+import { useTalentStats } from "@/hooks/useTalentStats";
 
 
 
 const Dashboard: React.FC = () => {
   const router = useRouter();
   const { challenges, loading, error } = useChallenges(undefined, true); // Fetch only recent challenges
-  console.log("Recent ones: ", challenges);
-
+  const { stats } = useTalentStats(); // Fetch challenge stats
   return (
     <div className="flex-1 px-6 py-3">
       <div className="flex flex-col gap-3 sm:flex-row md:flex-row lg:flex-row justify-between mb-4">
@@ -31,9 +31,18 @@ const Dashboard: React.FC = () => {
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        <StatisticsCard title="Completed Challenges" count="05" />
-        <StatisticsCard title="Open Challenges" count="200" />
-        <StatisticsCard title="Ongoing Challenges" count="200" />
+        <StatisticsCard
+          title="Completed Challenges"
+          count={stats?.completedChallenges ?? 0}
+        />
+        <StatisticsCard
+          title="Open Challenges"
+          count={stats?.openChallenges ?? 0}
+        />
+        <StatisticsCard
+          title="Ongoing Challenges"
+          count={stats?.ongoingChallenges ?? 0}
+        />
       </div>
       <div className="mb-8 flex justify-between items-center">
         <h2 className="text-xl text-[#101928] font-bold">Recent Challenges</h2>

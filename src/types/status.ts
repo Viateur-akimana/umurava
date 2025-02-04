@@ -1,6 +1,6 @@
 export interface StatsCardProps {
     title: string;
-    count: string;
+    count: number;
     isActive?: boolean;
 }
 export interface AdminStatsCardProps {
