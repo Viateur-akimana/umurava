@@ -92,11 +92,25 @@ export const getChallengeById = async (id: string): Promise<Challengee> => {
         });        
 
         return response.data.data;
-    } catch (error) {
-        console.error("Error fetching challenge:", error);
-        throw error;
-    }
-};
+    } catch (error:any) {
+        if (axios.isAxiosError(error)) {
+            const { status } = error.response || {};
+            if (status === 404) {
+              toast.error("Challenge not found.");
+            } else if (status === 401) {
+              toast.error("Please login to view this challenge.");
+            } else if (status === 403) {
+              toast.error("You don't have permission to view this challenge.");
+            } else {
+              toast.error("Error loading challenge details.");
+            }
+          } else {
+            toast.error("Network error. Please check your connection.");
+          }
+          throw error;
+        }
+    };
+
 
 export const updateChallenge = async (challengeId: string, challengeData: Partial<Challengee>) => {
     try {
@@ -104,19 +118,48 @@ export const updateChallenge = async (challengeId: string, challengeData: Partia
             headers: getAuthHeaders(),
         });
         return response.data.data;
-    } catch (error) {
-        console.error("Error updating challenge:", error);
-        throw error;
-    }
-};
+    } catch (error:any) {
+        if (axios.isAxiosError(error)) {
+            const { status } = error.response || {};
+            if (status === 404) {
+              toast.error("Challenge not found.");
+            } else if (status === 401) {
+              toast.error("Your session has expired. Please log in again.");
+            } else if (status === 403) {
+              toast.error("You don't have permission to update this challenge.");
+            } else if (status === 400) {
+              toast.error("Invalid data. Please check your inputs.");
+            } else {
+              toast.error("Failed to update challenge. Please try again.");
+            }
+          } else {
+            toast.error("Network error. Please check your connection.");
+          }
+          throw error;
+        }
+    };
+
 
 export const deleteChallenge = async (challengeId: string): Promise<void> => {
     try {
         await apiClient.delete(`/challenges/${challengeId}`, {
             headers: getAuthHeaders(),
         });
-    } catch (error) {
-        console.error("Error deleting challenge:", error);
-        throw error;
+    } catch (error:any) {
+        if (axios.isAxiosError(error)) {
+            const { status } = error.response || {};
+            if (status === 404) {
+              toast.error("Challenge not found.");
+            } else if (status === 401) {
+              toast.error("Your session has expired. Please log in again.");
+            } else if (status === 403) {
+              toast.error("You don't have permission to delete this challenge.");
+            } else {
+              toast.error("Failed to delete challenge. Please try again.");
+            }
+          } else {
+            toast.error("Network error. Please check your connection.");
+          }
+          throw error;
+        }
     }
-};

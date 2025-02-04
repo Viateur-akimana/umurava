@@ -49,7 +49,7 @@ export const ChallengeCard: React.FC<ChallengeCardComponentProps> = ({ challenge
             Skills Needed:
           </p>
           <div className="flex flex-wrap gap-2">
-            {challenge.skillsNeeded.map((skill, index) => (
+            {challenge.skillsNeeded?.map((skill, index) => (
               <span
                 key={index}
                 className="px-2 sm:px-3 py-1 border border-[#2B71F0] 

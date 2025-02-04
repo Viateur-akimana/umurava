@@ -65,6 +65,7 @@ const ChallengeDetailsPage: React.FC<ChallengeDetailsPageProps> = ({ params }) =
           category={currentChallenge.category}
           prize={currentChallenge.moneyPrize}
           timeline={currentChallenge.timeline}
+          challengeId={currentChallenge._id}
         />
       </div>
     </div>

@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { useDeleteChallenge } from "@/hooks/useChallenges";
+import { useAppDispatch } from "@/lib/redux/store"; 
+import { removeChallenge } from "@/lib/redux/features/challengesSlice"; 
 import { useParticipateInChallenge, useParticipationStatus } from "@/hooks/useParticipateChallenge";
 import { Challenge } from "@/types/challenge";
 import { InstructionCardProps } from "@/types/instructions";
@@ -12,18 +12,27 @@ interface CombinedProps extends InstructionCardProps {
 
 export default function InstructionCard({ contact, category, duration, prize, challengeId }: CombinedProps) {
   const pathname = usePathname();
-  const router = useRouter()
+  const router = useRouter();
+  const dispatch = useAppDispatch();
   const isAdmin = pathname.startsWith("/admin");
   const isTalent = pathname.startsWith("/talent");
-  const { handleDelete, isLoading } = useDeleteChallenge();
+  
   const { participationStatus, loading: statusLoading, refetch } = useParticipationStatus(challengeId);
-
   const { participate, loading: participateLoading } = useParticipateInChallenge();
 
+  const handleDelete = async (id: string) => {
+    try {
+      await dispatch(removeChallenge(id)).unwrap();
+      router.push("/admin/challenges")
+    } catch (error) {
+      console.error('Failed to delete challenge:', error);
+    }
+  };
 
   const handleChallengeClick = (id: string) => {
     router.push(`/admin/challenges/${id}/edit`);
   };
+
   return (
     <div className="max-w-md mx-auto bg-white rounded-lg p-6 space-y-6 border border-[#E4E7EC]">
       <h2 className="text-xl  text-black font-bold">Key instructions:</h2>
@@ -74,7 +83,7 @@ export default function InstructionCard({ contact, category, duration, prize, ch
             </button>
           ) : (
             <button
-              onClick={() => participate(challengeId, refetch)} // Pass refetch
+              onClick={() => participate(challengeId, refetch)}
               disabled={participateLoading}
               className="w-full bg-blue-500 text-white text-sm font-medium py-2 rounded-lg hover:bg-blue-600 transition duration-300"
             >
@@ -88,12 +97,14 @@ export default function InstructionCard({ contact, category, duration, prize, ch
         <div className="flex gap-6">
           <button
             onClick={() => handleDelete(challengeId)}
-            disabled={isLoading}
             className="bg-[#E5533C] hover:bg-red-700 duration-500 rounded-lg py-2 text-white text-lg font-semibold w-[50%]"
           >
-            {isLoading ? "Deleting..." : "Delete"}
+            Delete
           </button>
-          <button onClick={() => handleChallengeClick(challengeId)} className="bg-[#2B71F0] hover:bg-blue-700 duration-500 rounded-lg py-2 text-white text-lg font-semibold w-[50%]">
+          <button 
+            onClick={() => handleChallengeClick(challengeId)} 
+            className="bg-[#2B71F0] hover:bg-blue-700 duration-500 rounded-lg py-2 text-white text-lg font-semibold w-[50%]"
+          >
             Edit
           </button>
         </div>

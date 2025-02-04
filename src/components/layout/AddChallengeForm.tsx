@@ -97,8 +97,6 @@ const CreateChallenge = () => {
     try {
       const resultAction = await dispatch(createNewChallenge(formData));
       unwrapResult(resultAction);
-      
-      alert("Challenge created successfully!");
       setFormData({
         title: "",
         deadline: "",
