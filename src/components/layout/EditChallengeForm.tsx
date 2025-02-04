@@ -2,13 +2,18 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Challenge } from "@/types/challenge";
-import { useUpdateChallenge } from "@/hooks/useChallenges";
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from "@/lib/redux/store";
+import { updateExistingChallenge, clearError } from "@/lib/redux/features/challengesSlice";
+
+
 
 const EditChallengeForm: React.FC<{ challenge: Challenge | null }> = ({ challenge }) => {
   const router = useRouter();
+  const dispatch=useDispatch<AppDispatch>();
   const [currentDate] = useState(new Date().toISOString().split("T")[0]);
   const [duration, setDuration] = useState(0);
-  const { handleUpdateChallenge, loading, error, success } = useUpdateChallenge();
+  const { loading, error, success } = useSelector((state: RootState) => state.challenges);
   const [formData, setFormData] = useState<Partial<Challenge>>({
     title: "",
     deadline: "",
@@ -22,6 +27,7 @@ const EditChallengeForm: React.FC<{ challenge: Challenge | null }> = ({ challeng
     category: "design",
     skillsNeeded: [],
   });
+
 
   useEffect(() => {
     if (challenge) {
@@ -50,6 +56,11 @@ const EditChallengeForm: React.FC<{ challenge: Challenge | null }> = ({ challeng
       setDuration(days >= 0 ? days : 0);
     }
   }, [formData.deadline]);
+  useEffect(() => {
+    if (success) {
+      router.push("/admin/challenges");
+    }
+  }, [success, router]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -109,18 +120,12 @@ const EditChallengeForm: React.FC<{ challenge: Challenge | null }> = ({ challeng
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!challenge) return;
-
-    try {
-      const updatedChallenge = await handleUpdateChallenge(challenge._id, formData);
-      console.log("Updated challenge:", updatedChallenge)
-      if (success) {
-        alert("Challenge updated successfully!");
-        router.push("/challenges");
-      }
-    } catch (err) {
-      console.error("Error updating challenge:", err);
-      alert(error || "An error occurred while updating the challenge");
-    }
+    
+    dispatch(clearError());
+    dispatch(updateExistingChallenge({
+      challengeId: challenge._id,
+      challengeData: formData
+    }));
   };
 
   return (
@@ -132,6 +137,7 @@ const EditChallengeForm: React.FC<{ challenge: Challenge | null }> = ({ challeng
         <p className="text-center text-gray-600 mb-8">
           Update the details of your challenge
         </p>
+        {error && <div className="mb-4 text-red-500 text-center">{error}</div>}
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label htmlFor="title" className="block text-md font-medium text-gray-700 mb-1">

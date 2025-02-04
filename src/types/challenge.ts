@@ -1,12 +1,4 @@
 export interface Challenge {
-    // id:number;
-    // title: string;
-    // description: string;
-    // status: "Open" | "Closed";
-    // skillsNeeded: string[];
-    // timeline: string;
-    // seniorityLevel: string;
-    // companyLogo: string;
     _id: string;
     title: string;
     deadline: string;

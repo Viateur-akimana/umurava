@@ -6,13 +6,7 @@ export interface Participant {
     email: string;
 }
 
-export interface ParticipantsResponse {
-    _id: string;
-    participants: Participant[];
-    totalParticipants: number;
-}
-
-interface ParticipantsState {
+export interface ParticipantsState {
     participants: Participant[];
     totalParticipants: number;
     loading: boolean;
@@ -36,12 +30,24 @@ export const fetchChallengeParticipants = createAsyncThunk(
         challengeId: string,
         page?: number,
         limit?: number
-    }) => {
-        const data: ParticipantsResponse = await getChallengeParticipants(challengeId, page, limit);
-        return {
-            participants: data.participants,
-            totalParticipants: data.totalParticipants
-        };
+    }, { rejectWithValue }) => {
+        try {
+            const data = await getChallengeParticipants(challengeId, page, limit);
+            
+            if (Array.isArray(data)) {
+                return {
+                    participants: data[0]?.participants || [],
+                    totalParticipants: data[0]?.totalParticipants || 0
+                };
+            }
+
+            return {
+                participants: data.participants || [],
+                totalParticipants: data.totalParticipants || 0
+            };
+        } catch (error) {
+            return rejectWithValue(error instanceof Error ? error.message : "Unknown error");
+        }
     }
 );
 
@@ -62,9 +68,10 @@ const participantsSlice = createSlice({
             })
             .addCase(fetchChallengeParticipants.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.error.message || 'Failed to fetch participants';
+                state.error = action.payload as string || 'Failed to fetch participants';
             });
     }
 });
 
 export default participantsSlice.reducer;
+    

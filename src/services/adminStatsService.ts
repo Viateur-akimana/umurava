@@ -1,12 +1,11 @@
 import apiClient from "@/lib/utils/apiClient";
+import { getAuthHeaders } from "@/lib/utils/helpers";
 
-export const getAdminStats = async (filter: string = "this_week", token: string) => {
+export const getAdminStats = async (filter: string = "this_week") => {
   try {
     const response = await apiClient.get(`/admin/stats`, {
       params: { filter },
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: getAuthHeaders(),
     });
     
     return response.data;

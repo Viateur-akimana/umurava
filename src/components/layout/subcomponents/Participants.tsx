@@ -1,21 +1,34 @@
-import React, { useState } from 'react';
-import { User } from 'lucide-react';
-import { useChallengeParticipants } from '@/hooks/useChallengeParticipants';
-import { useParams } from 'next/navigation';
+import React, { useEffect, useState } from "react";
+import { User } from "lucide-react";
+import { useParams } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchChallengeParticipants } from "@/lib/redux/features/participantsSlice";
+import { AppDispatch, RootState } from "@/lib/redux/store";
 
 const Participants = () => {
-  const { id } = useParams<{ id: string }>(); // Get challengeId from URL params
-  const { participants, totalParticipants, loading, error } = useChallengeParticipants(id || '');
- console.log("Part", participants);
- 
+  const params = useParams();
+  const id = typeof params.id === "string" ? params.id : ""; // Ensure id is a string
+  const dispatch = useDispatch<AppDispatch>();
+
+  // Select participants, totalParticipants, loading, and error from Redux store
+  const { participants, totalParticipants, loading, error } = useSelector(
+    (state: RootState) => state.participants
+  );
+
   const [showAll, setShowAll] = useState(false);
+
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchChallengeParticipants({ challengeId: id }));
+    }
+  }, [id, dispatch]);
 
   if (loading) {
     return <div>Loading participants...</div>;
   }
 
   if (error) {
-    return <div>{error}</div>;
+    return <div className="text-red-500">{error}</div>;
   }
 
   // Ensure participants is an array
@@ -45,7 +58,9 @@ const Participants = () => {
                 <User className="w-8 h-8 text-gray-600 bg-gray-100 rounded-full p-1" />
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-900">{participant.fullName}</p>
+                <p className="text-sm font-medium text-gray-900">
+                  {participant.fullName}
+                </p>
                 <p className="text-xs text-gray-500">{participant.email}</p>
               </div>
             </div>

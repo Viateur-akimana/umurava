@@ -1,20 +1,31 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { Challenge } from "@/types/challenge";
 import { AdminStatsCard } from "@/components/layout/subcomponents/AdminStatsCard";
-import { useAdminStats } from "@/hooks/useAdminStats";
-import { useChallenges } from "@/hooks/useChallenges";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/lib/redux/store";
+import { fetchAdminStats } from "@/lib/redux/features/adminStatsSlice";
+import { fetchChallenges } from "@/lib/redux/features/challengesSlice";
 import { useRouter } from "next/navigation";
 
 
 const Dashboard: React.FC = () => {
   const [filter, setFilter] = useState("this_week");
-  const { stats } = useAdminStats(filter);
   const [selectedStatus, setSelectedStatus] = useState<"open" | "ongoing" | "completed" | undefined>(undefined);
-  const { challenges, loading } = useChallenges(selectedStatus);
+  const dispatch = useDispatch<AppDispatch>();
+  const { stats, loading: statsLoading } = useSelector((state: RootState) => state.adminStats);
+  const { challenges, loading: challengesLoading } = useSelector((state: RootState) => state.challenges);
+
+   useEffect(() => {
+    dispatch(fetchAdminStats(filter));
+  }, [dispatch, filter]);
+  
+  useEffect(() => {
+    dispatch(fetchChallenges({ status: selectedStatus, page: 1, limit: 6 }));
+  }, [dispatch, selectedStatus]);
+
 
   return (
     <div className="flex-1 px-6 py-3">
@@ -26,6 +37,11 @@ const Dashboard: React.FC = () => {
           </p>
         </div>
       </div>
+      {statsLoading ? (
+        <div>Loading stats...</div>
+      ) : (
+        <>
+          
       <div className="grid grid-cols-1 lg:grid-cols-2 md:grid-cols-2 gap-6 mb-8">
         <AdminStatsCard
           title="All Challenges"
@@ -65,12 +81,13 @@ const Dashboard: React.FC = () => {
           onFilterChange={setFilter}
         />
       </div>
+        </>)}
       <div className="mb-6 flex justify-between items-center">
         <h2 className="text-xl text-[#101928] font-semibold">Recent Challenges</h2>
         <button className="text-blue-500">See all →</button>
       </div>
 
-      {loading ? (
+      {challengesLoading ? (
         <div>Loading challenges...</div>
       ) : challenges.length === 0 ? (
         <div>No challenges available</div>

@@ -1,10 +1,12 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { ChallengeCard } from "@/components/layout/subcomponents/ChallengeCard";
 import { FileText } from "lucide-react";
-import { useChallenges } from "@/hooks/useChallenges";
+import { fetchChallenges } from "@/lib/redux/features/challengesSlice";
+import { RootState } from "@/lib/redux/store"; 
 
 interface Item {
   label: string;
@@ -32,23 +34,44 @@ const items: Item[] = [
 ];
 
 const ChallengePage = () => {
+  const dispatch = useDispatch();
   const [selectedStatus, setSelectedStatus] = useState<"open" | "ongoing" | "completed" | undefined>(undefined);
-  const { challenges, challengeCounts, loading, page, totalPages, setPage } = useChallenges(selectedStatus);
+  
+  const { 
+    challenges, 
+    loading, 
+    counts,
+    pagination: { page, totalPages }
+  } = useSelector((state: RootState) => state.challenges);
+
+  // Fetch challenges when status or page changes
+  useEffect(() => {
+    dispatch(fetchChallenges({ 
+      status: selectedStatus, 
+      page, 
+      limit: 6 
+    }) as any);
+  }, [dispatch, selectedStatus, page]);
 
   const handleItemClick = (item: Item) => {
     items.forEach((tab) => (tab.isActive = tab.label === item.label));
     setSelectedStatus(item.status);
-    setPage(1);
+    // Reset to first page when changing status
+    dispatch(fetchChallenges({ 
+      status: item.status, 
+      page: 1, 
+      limit: 6 
+    }) as any);
   };
 
   const handlePageChange = (newPage: number) => {
-    setPage(newPage);
+    dispatch(fetchChallenges({ 
+      status: selectedStatus, 
+      page: newPage, 
+      limit: 6 
+    }) as any);
   };
 
-  useEffect(() => {
-    if (!loading) {
-    }
-  }, [selectedStatus, loading]);
   return (
     <div className="flex-1 px-6 py-3">
       <div className="flex justify-between items-center mb-8">
@@ -64,14 +87,18 @@ const ChallengePage = () => {
           <div
             key={item.label}
             onClick={() => handleItemClick(item)}
-            className={`flex items-center justify-center gap-3 px-2 border ${item.isActive ? "border-[#FCD2C2] bg-[#D0E0FC]" : "border-[#D0D5DD] bg-[#F0F2F5] hover:bg-white/10"} text-[#344054] py-3 rounded-lg transition-colors cursor-pointer`}
+            className={`flex items-center justify-center gap-3 px-2 border ${
+              item.isActive ? "border-[#FCD2C2] bg-[#D0E0FC]" : "border-[#D0D5DD] bg-[#F0F2F5] hover:bg-white/10"
+            } text-[#344054] py-3 rounded-lg transition-colors cursor-pointer`}
           >
             <FileText className={`h-4 w-4 ${item.isActive ? "text-[#2B71F0]" : "text-[#98A2B3]"}`} />
             <span className="text-sm text-nowrap font-medium text-[#344054]">
               {item.label}
             </span>
-            <div className={`h-6 w-7 rounded-full flex items-center justify-center ${item.isActive ? "bg-[#2B71F0] text-white" : "bg-[#E4E7EC] text-[#344054]"}`}>
-              <span>{item.status ? challengeCounts[item.status] : challengeCounts.all}</span>
+            <div className={`h-6 w-7 rounded-full flex items-center justify-center ${
+              item.isActive ? "bg-[#2B71F0] text-white" : "bg-[#E4E7EC] text-[#344054]"
+            }`}>
+              <span>{item.status ? counts[item.status] : counts.all}</span>
             </div>
           </div>
         ))}
