@@ -5,6 +5,8 @@ import Footer from "@/components/layout/Footer";
 import { Work_Sans } from "next/font/google";
 import "./globals.css";
 import { usePathname } from 'next/navigation';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const workSans = Work_Sans({
   subsets: ["latin"],
@@ -14,7 +16,7 @@ const workSans = Work_Sans({
 
 const NavigationWrapper = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
-  
+
   const isRestrictedArea = pathname.startsWith('/talent') || pathname.startsWith('/admin') || pathname.startsWith('/login') || pathname.startsWith('/signup');
 
   if (isRestrictedArea) {
@@ -38,7 +40,14 @@ export default function RootLayout({
   return (
     <html lang="en" className={workSans.variable}>
       <body className="font-dm-sans antialiased min-h-screen flex flex-col bg-white">
+
         <Providers>
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={true}
+        />
+
         <NavigationWrapper>{children}</NavigationWrapper>
         </Providers>
       </body>

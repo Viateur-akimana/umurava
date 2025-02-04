@@ -1,28 +1,25 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useDeleteChallenge } from "@/hooks/useChallenges";
+import { useParticipateInChallenge, useParticipationStatus } from "@/hooks/useParticipateChallenge";
 import { Challenge } from "@/types/challenge";
 import { InstructionCardProps } from "@/types/instructions";
 import { Calendar, Mail, CircleDollarSign, Globe } from 'lucide-react';
-import { useParams, usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 interface CombinedProps extends InstructionCardProps {
   challenge?: Challenge;
 }
 
-export default function InstructionCard({
-  contact,
-  category,
-  duration,
-  prize,
-  challenge
-}: CombinedProps) {
+export default function InstructionCard({ contact, category, duration, prize, challengeId }: CombinedProps) {
   const pathname = usePathname();
   const router = useRouter()
   const isAdmin = pathname.startsWith("/admin");
   const isTalent = pathname.startsWith("/talent");
-
-  const { id: challengeId } = useParams(); // Get challengeId from URL
   const { handleDelete, isLoading } = useDeleteChallenge();
+  const { participationStatus, loading: statusLoading, refetch } = useParticipationStatus(challengeId);
+
+  const { participate, loading: participateLoading } = useParticipateInChallenge();
+
 
   const handleChallengeClick = (id: string) => {
     router.push(`/admin/challenges/${id}/edit`);
@@ -69,16 +66,26 @@ export default function InstructionCard({
           </div>
         </div>
       </div>
-      {isTalent && (
-        <button className="w-full bg-blue-500 text-white text-sm font-medium py-2 rounded-lg hover:bg-blue-600 transition">
-          Submit your work
-        </button>
+      {isTalent && !statusLoading && (
+        <div className="flex gap-3">
+          {participationStatus ? (
+            <button className="w-full bg-blue-500 text-white text-sm font-medium py-2 rounded-lg hover:bg-blue-600 transition duration-300">
+              Submit your work
+            </button>
+          ) : (
+            <button
+              onClick={() => participate(challengeId, refetch)} // Pass refetch
+              disabled={participateLoading}
+              className="w-full bg-blue-500 text-white text-sm font-medium py-2 rounded-lg hover:bg-blue-600 transition duration-300"
+            >
+              {participateLoading ? "Joining..." : "Start"}
+            </button>
+          )}
+        </div>
       )}
+
       {isAdmin && (
         <div className="flex gap-6">
-          {/* <button className="bg-[#E5533C] hover:bg-red-700 duration-500 rounded-lg py-2 text-white text-lg font-semibold w-[50%]">
-            Delete
-          </button> */}
           <button
             onClick={() => handleDelete(challengeId)}
             disabled={isLoading}
