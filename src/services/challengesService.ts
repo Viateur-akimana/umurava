@@ -103,7 +103,7 @@ export const updateChallenge = async (challengeId: string, challengeData: Partia
         const response = await apiClient.put(`/challenges/${challengeId}`, challengeData, {
             headers: getAuthHeaders(),
         });
-        return response.data;
+        return response.data.data;
     } catch (error) {
         console.error("Error updating challenge:", error);
         throw error;
