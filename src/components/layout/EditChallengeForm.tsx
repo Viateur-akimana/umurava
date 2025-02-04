@@ -7,6 +7,7 @@ import { useUpdateChallenge } from "@/hooks/useChallenges";
 const EditChallengeForm: React.FC<{ challenge: Challenge | null }> = ({ challenge }) => {
   const router = useRouter();
   const [currentDate] = useState(new Date().toISOString().split("T")[0]);
+  const [duration, setDuration] = useState(0);
   const { handleUpdateChallenge, loading, error, success } = useUpdateChallenge();
   const [formData, setFormData] = useState<Partial<Challenge>>({
     title: "",
@@ -40,8 +41,15 @@ const EditChallengeForm: React.FC<{ challenge: Challenge | null }> = ({ challeng
     }
   }, [challenge]);
 
-  console.log("deadline is: ", challenge?.deadline);
-  
+  useEffect(() => {
+    if (formData.deadline) {
+      const deadlineDate = new Date(formData.deadline);
+      const currentDate = new Date();
+      const timeDifference = deadlineDate.getTime() - currentDate.getTime();
+      const days = Math.floor(timeDifference / (1000 * 3600 * 24));
+      setDuration(days >= 0 ? days : 0);
+    }
+  }, [formData.deadline]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -97,7 +105,7 @@ const EditChallengeForm: React.FC<{ challenge: Challenge | null }> = ({ challeng
       [field]: (prevState[field] || []).filter((_, i) => i !== index),
     }));
   };
-
+ 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!challenge) return;
@@ -158,21 +166,16 @@ const EditChallengeForm: React.FC<{ challenge: Challenge | null }> = ({ challeng
               />
             </div>
             <div className="w-1/2">
-              <label htmlFor="seniorityLevel" className="block text-md font-medium text-gray-700 mb-1">
-                Seniority Level
+              <label htmlFor="duration" className="block text-md font-medium text-gray-700 mb-1">
+                Duration (Days)
               </label>
-              <select
-                id="seniorityLevel"
-                name="seniorityLevel"
-                value={formData.seniorityLevel?.[0]}
-                onChange={handleChange}
+              <input
+                id="duration"
+                type="text"
+                value={duration}
+                readOnly
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
-                required
-              >
-                <option value="junior">Junior</option>
-                <option value="intermediate">Intermediate</option>
-                <option value="senior">Senior</option>
-              </select>
+              />
             </div>
           </div>
 
@@ -257,6 +260,24 @@ const EditChallengeForm: React.FC<{ challenge: Challenge | null }> = ({ challeng
               className="w-full px-4 py-4 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
               required
             />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="seniorityLevel" className="block text-md font-medium text-gray-700 mb-1">
+              Seniority Level
+            </label>
+            <select
+              id="seniorityLevel"
+              name="seniorityLevel"
+              value={formData.seniorityLevel?.[0]}
+              onChange={handleChange}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
+              required
+            >
+              <option value="junior">Junior</option>
+              <option value="intermediate">Intermediate</option>
+              <option value="senior">Senior</option>
+            </select>
           </div>
 
           <div className="mb-4">
