@@ -1,5 +1,5 @@
 'use client'
-
+import Providers from "@/lib/redux/provider";
 import NavBar from "@/components/layout/NavBar";
 import Footer from "@/components/layout/Footer";
 import { Work_Sans } from "next/font/google";
@@ -38,7 +38,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={workSans.variable}>
       <body className="font-dm-sans antialiased min-h-screen flex flex-col bg-white">
+        <Providers>
         <NavigationWrapper>{children}</NavigationWrapper>
+        </Providers>
       </body>
     </html>
   );

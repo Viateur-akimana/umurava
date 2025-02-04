@@ -1,6 +1,9 @@
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
-import { useCreateChallenge } from "@/hooks/useChallenges";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/lib/redux/store";
+import { createNewChallenge } from "@/lib/redux/features/challengesSlice";
+import { unwrapResult } from "@reduxjs/toolkit";
 import type { Challengee } from "@/services/challengesService";
 
 const CreateChallenge = () => {
@@ -21,7 +24,8 @@ const CreateChallenge = () => {
   const router = useRouter();
   const [duration, setDuration] = useState(0);
   const [currentDate] = useState(new Date().toISOString().split("T")[0]);
-  const { handleCreateChallenge, loading, error, success } = useCreateChallenge();
+  const dispatch = useDispatch<AppDispatch>();
+  const { loading, error } = useSelector((state: RootState) => state.challenges);
 
   useEffect(() => {
     if (formData.deadline) {
@@ -91,24 +95,24 @@ const CreateChallenge = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await handleCreateChallenge(formData);
-      if (success) {
-        alert("Challenge created successfully!");
-        setFormData({
-          title: "",
-          deadline: "",
-          moneyPrize: "",
-          contactEmail: "",
-          projectBrief: "",
-          projectDescription: [],
-          projectRequirements: [],
-          deliverables: [],
-          seniorityLevel: ["junior"],
-          category: "design",
-          skillsNeeded: [],
-        });
-        router.push("/challenges");
-      }
+      const resultAction = await dispatch(createNewChallenge(formData));
+      unwrapResult(resultAction);
+      
+      alert("Challenge created successfully!");
+      setFormData({
+        title: "",
+        deadline: "",
+        moneyPrize: "",
+        contactEmail: "",
+        projectBrief: "",
+        projectDescription: [],
+        projectRequirements: [],
+        deliverables: [],
+        seniorityLevel: ["junior"],
+        category: "design",
+        skillsNeeded: [],
+      });
+      router.push("/admin/challenges");
     } catch (err) {
       console.error("Error creating challenge:", err);
       alert(error || "An error occurred while creating the challenge");

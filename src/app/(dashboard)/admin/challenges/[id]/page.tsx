@@ -1,9 +1,11 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import ChallengeDetailsCard from "@/components/layout/subcomponents/ChallengeDetailsCard";
 import { FaArrowLeft } from "react-icons/fa";
 import { useRouter } from "next/navigation";
-import { useChallengeById } from "@/hooks/useChallenges";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchChallengeById } from "@/lib/redux/features/challengesSlice"; 
+import { AppDispatch, RootState } from "@/lib/redux/store";
 
 interface ChallengeDetailsPageProps {
   params: Promise<{
@@ -13,9 +15,14 @@ interface ChallengeDetailsPageProps {
 
 const ChallengeDetailsPage: React.FC<ChallengeDetailsPageProps> = ({ params }) => {
   const router = useRouter();
-
+  const dispatch = useDispatch<AppDispatch>();
   const { id: challengeId } = React.use(params); 
-  const { challenge, loading, error } = useChallengeById(challengeId);
+  const { currentChallenge, loading, error } = useSelector((state: RootState) => state.challenges);
+  useEffect(() => {
+    if (challengeId) {
+      dispatch(fetchChallengeById(challengeId));
+    }
+  }, [challengeId, dispatch]);
   if (loading) {
     return <div className="w-full flex items-center justify-center">Loading challenge details...</div>;
   }
@@ -24,9 +31,10 @@ const ChallengeDetailsPage: React.FC<ChallengeDetailsPageProps> = ({ params }) =
     return <div className="w-full flex items-center justify-center text-red-600">{error}</div>;
   }
 
-  if (!challenge) {
+  if (!currentChallenge) {
     return <div className="w-full flex items-center justify-center">Challenge not found</div>;
   }
+
 
   return (
     <div>
@@ -42,21 +50,21 @@ const ChallengeDetailsPage: React.FC<ChallengeDetailsPageProps> = ({ params }) =
         <span className="text-[#98A2B3]">Challenges & Hackathons</span>
         <span className="text-gray-400">/</span>
         <span className="text-[#2B71F0] hover:underline cursor-pointer">
-          {challenge.title}
+          {currentChallenge.title}
         </span>
       </div>
 
       <div className="flex">
         <ChallengeDetailsCard
-          title={challenge.title}
-          projectBrief={challenge.projectBrief}
-          productRequirements={challenge.projectRequirements}
-          productDesigns={challenge.projectDescription}
-          deliverables={challenge.deliverables}
-          contactEmail={challenge.contactEmail}
-          category={challenge.category}
-          prize={challenge.moneyPrize}
-          timeline={challenge.timeline}
+          title={currentChallenge.title}
+          projectBrief={currentChallenge.projectBrief}
+          productRequirements={currentChallenge.projectRequirements}
+          productDesigns={currentChallenge.projectDescription}
+          deliverables={currentChallenge.deliverables}
+          contactEmail={currentChallenge.contactEmail}
+          category={currentChallenge.category}
+          prize={currentChallenge.moneyPrize}
+          timeline={currentChallenge.timeline}
         />
       </div>
     </div>

@@ -1,53 +1,81 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { ChallengeCard } from "@/components/layout/subcomponents/ChallengeCard";
-import { useChallenges } from "@/hooks/useChallenges";
 import { useRouter } from "next/navigation";
+import { 
+  fetchChallenges,
+  clearError
+} from "@/lib/redux/features/challengesSlice"; // Adjust path as needed
+import { RootState, AppDispatch } from "@/lib/redux/store"; // Adjust path as needed
 
 interface ChallengesProps {
-  isHomePage?: boolean; // Prop to determine if the component is on the homepage
+  isHomePage?: boolean;
 }
 
 const Challenges: React.FC<ChallengesProps> = ({ isHomePage = false }) => {
-  const [selectedStatus, setSelectedStatus] = useState<"open" | "ongoing" | "completed" | undefined>(undefined);
-  const { challenges, loading, page, totalPages, setPage } = useChallenges(selectedStatus);
+  const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
+  
+  const {
+    challenges,
+    loading,
+    error,
+    pagination: { page, totalPages }
+  } = useSelector((state: RootState) => state.challenges);
+
+  // Fetch challenges on mount and when page changes
+  useEffect(() => {
+    dispatch(fetchChallenges({ page }));
+    
+    // Clear any errors when component unmounts
+    return () => {
+      dispatch(clearError());
+    };
+  }, [dispatch, page]);
 
   const handleViewMore = () => {
     router.push("/web/pages/challenges");
   };
 
   const handlePageChange = (newPage: number) => {
-    setPage(newPage);
+    dispatch(fetchChallenges({ page: newPage }));
   };
 
   return (
-    <div className="w-full p-6 lg:px-28 lg:py-12 bg-[#F9FAFB]">
-      <h2 className="text-3xl font-bold text-center mb-6">
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-4">
         Explore Challenges & Hackathons
-      </h2>
-      <p className="text-center text-gray-500 mb-8">
-        Join Skills Challenges Program to accelerate your career growth and
-        become part of Africa’s largest workforce of digital professionals.
+      </h1>
+      
+      <p className="mb-8">
+        Join Skills Challenges Program to accelerate your career growth and 
+        become part of Africa&apos;s largest workforce of digital professionals.
       </p>
 
       {loading ? (
-        <div className="w-full flex items-center justify-center">Loading challenges...</div>
+        <div className="text-center py-8">Loading challenges...</div>
+      ) : error ? (
+        <div className="text-red-500 text-center py-8">{error}</div>
       ) : challenges.length === 0 ? (
-        <div className="w-full flex items-center justify-center">No challenges available</div>
+        <div className="text-center py-8">No challenges available</div>
       ) : (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
-            {challenges.map((challenge, index) => (
-              <ChallengeCard key={index} challenge={challenge} isAdmin={true} />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {challenges.map((challenge) => (
+              <ChallengeCard 
+                key={challenge._id} 
+                challenge={challenge} 
+                isAdmin={true}
+              />
             ))}
           </div>
 
           {/* Pagination Controls - Render only if NOT on homepage */}
           {!isHomePage && (
-            <div className="flex justify-center mt-8">
+            <div className="flex justify-center items-center mt-8">
               <button
                 onClick={() => handlePageChange(page - 1)}
                 disabled={page === 1}
@@ -55,9 +83,11 @@ const Challenges: React.FC<ChallengesProps> = ({ isHomePage = false }) => {
               >
                 Previous
               </button>
-              <span className="px-4 py-2 mx-1">
+
+              <span className="mx-4">
                 Page {page} of {totalPages}
               </span>
+
               <button
                 onClick={() => handlePageChange(page + 1)}
                 disabled={page === totalPages}
@@ -67,18 +97,18 @@ const Challenges: React.FC<ChallengesProps> = ({ isHomePage = false }) => {
               </button>
             </div>
           )}
-        </>
-      )}
 
-      {isHomePage && (
-        <div className="text-center mt-8">
-          <button
-            onClick={handleViewMore}
-            className="px-6 py-2 bg-white text-blue-600 rounded-lg border border-blue-600 hover:bg-blue-600 hover:text-white font-semibold"
-          >
-            View More
-          </button>
-        </div>
+          {isHomePage && (
+            <div className="text-center mt-8">
+              <button
+                onClick={handleViewMore}
+                className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              >
+                View More
+              </button>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
