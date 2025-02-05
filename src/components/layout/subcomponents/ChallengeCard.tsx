@@ -2,6 +2,7 @@
 import { ChallengeCardProps } from "@/types/challenge";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useMemo } from "react";
 
 interface ChallengeCardComponentProps extends ChallengeCardProps {
   isAdmin?: boolean;
@@ -14,7 +15,16 @@ export const ChallengeCard: React.FC<ChallengeCardComponentProps> = ({ challenge
     const role = isAdmin ? "admin" : "talent";
     router.push(`/${role}/challenges/${id}`);
   };
+  const remainingDays = useMemo(() => {
+    if (!challenge.deadline) return "No deadline available";
 
+    const deadlineDate = new Date(challenge.deadline);
+    const currentDate = new Date();
+    const timeDiff = deadlineDate.getTime() - currentDate.getTime();
+    const daysRemaining = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+
+    return daysRemaining > 0 ? `${daysRemaining} days` : "Ended";
+  }, [challenge.deadline]);
   return (
     <div className="bg-white rounded-lg shadow-sm overflow-hidden w-full 
                     sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto
@@ -71,7 +81,7 @@ export const ChallengeCard: React.FC<ChallengeCardComponentProps> = ({ challenge
           </p>
           <p className="text-sm text-[#171717] flex flex-wrap items-center">
             Timeline:{" "}
-            <span className="text-[#475367] ml-1">{challenge.timeline}</span>
+            <span className="text-[#475367] ml-1">{remainingDays}</span>
           </p>
         </div>
 
