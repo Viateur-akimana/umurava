@@ -74,7 +74,7 @@ export const useChallenges = (
         };
 
         fetchChallenges();
-    }, [status, recent, page]); // Add `page` to dependencies
+    }, [status, recent, page]);
 
     return { challenges, setChallenges, challengeCounts, loading, error, page, totalPages, setPage };
 };
