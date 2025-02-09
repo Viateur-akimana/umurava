@@ -157,4 +157,4 @@ Firstly, you access the page at "https://umurava-3m77.vercel.app/" as the homepa
 
 
 
-The application is successfully deployed on Vercel and can be accessed at [https://umurava-dk8q-k8b11h84b-viateurs-projects.vercel.app/](https://umurava-dk8q-k8b11h84b-viateurs-projects.vercel.app/)
+The application is successfully deployed on Vercel and can be accessed at [https://umurava-app-two.vercel.app/](https://umurava-app-two.vercel.app/)
