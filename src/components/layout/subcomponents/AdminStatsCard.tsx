@@ -4,12 +4,18 @@ import React, { useState } from "react";
 import { AdminStatsCardProps } from "@/types/status";
 import { FileText, MoveUp } from "lucide-react";
 
-export const AdminStatsCard: React.FC<AdminStatsCardProps> = ({ title, count, rate, filter, onFilterChange }) => {
+export const AdminStatsCard: React.FC<AdminStatsCardProps> = ({
+  title,
+  count,
+  rate,
+  filter,
+  onFilterChange,
+}) => {
   const [localFilter, setLocalFilter] = useState(filter);
 
   const handleFilterChange = (newFilter: string) => {
     setLocalFilter(newFilter);
-    onFilterChange(newFilter); 
+    onFilterChange(newFilter);
   };
 
   return (
