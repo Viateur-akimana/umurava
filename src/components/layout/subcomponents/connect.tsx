@@ -1,8 +1,10 @@
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 
 const Connect: React.FC = () => {
+    const router = useRouter()
     return (
         <div className="bg-gray-100 px-8 py-14 lg:px-28">
             <div className='relative h-[351] grid grid-cols-1 bg-blue-600 p-8 md:p-12 rounded-xl'>
