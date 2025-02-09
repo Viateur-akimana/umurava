@@ -1,5 +1,4 @@
 "use client"
-
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { Challenge } from "@/types/challenge";
@@ -24,8 +23,8 @@ const Dashboard: React.FC = () => {
   
   useEffect(() => {
     dispatch(fetchChallenges({ status: selectedStatus, page: 1, limit: 6 }));
+    setSelectedStatus(selectedStatus);
   }, [dispatch, selectedStatus]);
-
 
   return (
     <div className="flex-1 px-6 py-3">
