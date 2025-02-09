@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import UserChallenges from "@/components/layout/subcomponents/Users";
 import Benefits from "../../../../components/layout/subcomponents/Benefits";
 import Cta from "../../../../components/layout/subcomponents/Cta";
@@ -12,15 +12,15 @@ import Challenges from "../challenges/page";
 export default function Home() {
   return (
     <div className="flex flex-col sm:items-start ">
-      <Hero/>
-      <Features/>
-      <Stats/>
-      <Skills/>
-      <Challenges isHomePage={true}/>
-      <Benefits/>
+      <Hero />
+      <Features />
+      <Stats />
+      <Skills />
+      <Challenges />
+      <Benefits />
       <UserChallenges />
-      <Process/>
-      <Cta/>
+      <Process />
+      <Cta />
     </div>
   );
 }

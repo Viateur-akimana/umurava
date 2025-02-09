@@ -13,7 +13,7 @@ const EditChallengeForm: React.FC<{ challenge: Challenge | null }> = ({ challeng
   const dispatch=useDispatch<AppDispatch>();
   const [currentDate] = useState(new Date().toISOString().split("T")[0]);
   const [duration, setDuration] = useState(0);
-  const { loading, error, success } = useSelector((state: RootState) => state.challenges);
+  const { loading, error} = useSelector((state: RootState) => state.challenges);
   const [formData, setFormData] = useState<Partial<Challenge>>({
     title: "",
     deadline: "",
@@ -56,12 +56,6 @@ const EditChallengeForm: React.FC<{ challenge: Challenge | null }> = ({ challeng
       setDuration(days >= 0 ? days : 0);
     }
   }, [formData.deadline]);
-  useEffect(() => {
-    if (success) {
-      router.push("/admin/challenges");
-    }
-  }, [success, router]);
-
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
@@ -126,6 +120,7 @@ const EditChallengeForm: React.FC<{ challenge: Challenge | null }> = ({ challeng
       challengeId: challenge._id,
       challengeData: formData
     }));
+    router.push("/admin/challenges");
   };
 
   return (

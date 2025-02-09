@@ -10,7 +10,7 @@ export const getAdminStats = async (filter: string = "this_week") => {
     
     return response.data;
   } catch (error) {
-    console.error("Error fetching admin stats:", error);
+    // console.error("Error fetching admin stats:", error);
     throw error;
   }
 };

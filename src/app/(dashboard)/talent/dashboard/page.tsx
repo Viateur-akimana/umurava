@@ -47,7 +47,7 @@ const Dashboard: React.FC = () => {
       {statsLoading ? (
         <div className="w-full flex items-center justify-center">Loading stats...</div>
       ) : statsError ? (
-        <div className="w-full flex items-center justify-center text-red-600">{error}</div>
+        <div className="w-full flex items-center justify-center text-red-600">{statsError}</div>
       ) : challenges.length === 0 ? (
         <div className="w-full flex items-center justify-center">No recent challenges found.</div>
       ) : (
@@ -82,7 +82,7 @@ const Dashboard: React.FC = () => {
       {challengesLoading ? (
         <div className="w-full flex items-center justify-center">Loading challenges...</div>
       ) : challengesError ? (
-        <div className="w-full flex items-center justify-center text-red-600">{error}</div>
+        <div className="w-full flex items-center justify-center text-red-600">{challengesError}</div>
       ) : challenges.length === 0 ? (
         <div className="w-full flex items-center justify-center">No recent challenges found.</div>
       ) : (

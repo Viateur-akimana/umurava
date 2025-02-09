@@ -56,7 +56,8 @@ const ChallengePage = () => {
 
   const handleItemClick = (item: Item) => {
     items.forEach((tab) => (tab.isActive = tab.label === item.label));
-    setSelectedStatus(item.status);
+    const newStatus = item.status
+    setSelectedStatus(newStatus);
     // Reset to first page when changing status
     dispatch(fetchChallenges({ 
       status: item.status, 
