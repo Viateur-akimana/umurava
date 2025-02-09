@@ -5,6 +5,7 @@ import { Challenge } from "@/types/challenge";
 import { InstructionCardProps } from "@/types/instructions";
 import { Calendar, Mail, CircleDollarSign, Globe } from 'lucide-react';
 import { usePathname, useRouter } from "next/navigation";
+import { useMemo } from "react";
 
 interface CombinedProps extends InstructionCardProps {
   challenge?: Challenge;
@@ -32,6 +33,17 @@ export default function InstructionCard({ contact, category, duration, prize, ch
   const handleChallengeClick = (id: string) => {
     router.push(`/admin/challenges/${id}/edit`);
   };
+
+  const remainingDays = useMemo(() => {
+      if (!duration) return "No deadline available";
+  
+      const deadlineDate = new Date(duration);
+      const currentDate = new Date();
+      const timeDiff = deadlineDate.getTime() - currentDate.getTime();
+      const daysRemaining = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+  
+      return daysRemaining > 0 ? `${daysRemaining} days` : "Ended";
+    }, [duration]);
 
   return (
     <div className="max-w-md mx-auto bg-white rounded-lg p-6 space-y-6 border border-[#E4E7EC]">
@@ -61,7 +73,7 @@ export default function InstructionCard({ contact, category, duration, prize, ch
             <Calendar className="text-blue-500" />
           </div>
           <div>
-            <p className="text-md font-medium">{duration}</p>
+            <p className="text-md font-medium">{remainingDays}</p>
             <p className="text-xs text-gray-500">Duration</p>
           </div>
         </div>

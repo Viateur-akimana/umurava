@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: 'https://umurava-skill-challenge-backend-production.up.railway.app/api/v1/',
+  baseURL: 'https://umurava-skill-challenge-backend.onrender.com/api/v1',
   headers: {
       'Content-Type': 'application/json',
   },

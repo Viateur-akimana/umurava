@@ -7,7 +7,8 @@ import Hero from "../../../../components/layout/subcomponents/Hero";
 import Process from "../../../../components/layout/subcomponents/Process";
 import Skills from "../../../../components/layout/subcomponents/Skills";
 import Stats from "../../../../components/layout/subcomponents/Stats";
-import Challenges from "../challenges/page";
+import Challenges from "@/components/layout/Challenges";
+// import Challenges from "../challenges/page";
 
 export default function Home() {
   return (
@@ -16,7 +17,7 @@ export default function Home() {
       <Features />
       <Stats />
       <Skills />
-      <Challenges />
+      <Challenges isHomePage={true}  />
       <Benefits />
       <UserChallenges />
       <Process />
