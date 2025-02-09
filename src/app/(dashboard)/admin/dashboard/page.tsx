@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { Challenge } from "@/types/challenge";
 import { AdminStatsCard } from "@/components/layout/subcomponents/AdminStatsCard";
@@ -114,6 +114,17 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({ challenge }) => {
     router.push(`/admin/challenges/${id}`);
   };
 
+  const remainingDays = useMemo(() => {
+      if (!challenge.deadline) return "No deadline available";
+  
+      const deadlineDate = new Date(challenge.deadline);
+      const currentDate = new Date();
+      const timeDiff = deadlineDate.getTime() - currentDate.getTime();
+      const daysRemaining = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+  
+      return daysRemaining > 0 ? `${daysRemaining} days` : "Ended";
+    }, [challenge.deadline]);
+
   return (
     <div
       className="bg-white rounded-lg shadow-sm overflow-hidden w-full 
@@ -178,7 +189,7 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({ challenge }) => {
           </p>
           <p className="text-sm text-[#171717] flex flex-wrap items-center">
             Timeline:{" "}
-            <span className="text-[#475367] ml-1">{challenge.timeline}</span>
+            <span className="text-[#475367] ml-1">{remainingDays}</span>
           </p>
         </div>
 
