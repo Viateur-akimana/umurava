@@ -1,4 +1,4 @@
-import Challenges from "@/components/layout/Challenges"; 
+import Challenges from "@/components/layout/Challenges";
 
 const ChallengesPage = () => {
   return (
