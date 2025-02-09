@@ -10,7 +10,7 @@ export const getChallengeStats = async (): Promise<TalentChallengeStats> => {
         });
         return response.data;
     } catch (error) {
-        console.error("Error fetching challenge stats:", error);
+        // console.error("Error fetching challenge stats:", error);
         throw error;
     }
 };
